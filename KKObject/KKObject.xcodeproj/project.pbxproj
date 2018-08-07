@@ -1,0 +1,643 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		1A915845211972510055256A /* KKObject.framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 1A915846211972510055256A /* Build configuration list for PBXAggregateTarget "KKObject.framework" */;
+			buildPhases = (
+				1A91584B211972640055256A /* ShellScript */,
+			);
+			dependencies = (
+				1A91584A211972620055256A /* PBXTargetDependency */,
+			);
+			name = KKObject.framework;
+			productName = KKObject.framework;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		1A9157F321196F7B0055256A /* KKObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157F121196F7B0055256A /* KKObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581721196FA90055256A /* kk-block.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FA21196FA90055256A /* kk-block.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581821196FA90055256A /* kk-binary.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FB21196FA90055256A /* kk-binary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581921196FA90055256A /* kk-string.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FC21196FA90055256A /* kk-string.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581A21196FA90055256A /* kk-object.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FD21196FA90055256A /* kk-object.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581B21196FA90055256A /* kk-ev.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FE21196FA90055256A /* kk-ev.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581C21196FA90055256A /* kk-http.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FF21196FA90055256A /* kk-http.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581D21196FA90055256A /* kk-event.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580021196FA90055256A /* kk-event.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581E21196FA90055256A /* kk-dispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580121196FA90055256A /* kk-dispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91581F21196FA90055256A /* kk-crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580221196FA90055256A /* kk-crypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582021196FA90055256A /* kk-script.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580321196FA90055256A /* kk-script.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582121196FA90055256A /* kk-chan.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580421196FA90055256A /* kk-chan.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582221196FA90055256A /* kk-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580521196FA90055256A /* kk-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582321196FA90055256A /* kk-wk.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580621196FA90055256A /* kk-wk.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582421196FA90055256A /* kk-ws.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580721196FA90055256A /* kk-ws.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91582521196FA90055256A /* kk-atomic-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580921196FA90055256A /* kk-atomic-pthread.cc */; };
+		1A91582621196FA90055256A /* kk-crypto.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580A21196FA90055256A /* kk-crypto.cc */; };
+		1A91582721196FA90055256A /* kk-chan.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580B21196FA90055256A /* kk-chan.cc */; };
+		1A91582821196FA90055256A /* kk-event.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580C21196FA90055256A /* kk-event.cc */; };
+		1A91582921196FA90055256A /* kk-string.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580D21196FA90055256A /* kk-string.cc */; };
+		1A91582A21196FA90055256A /* kk-script.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580E21196FA90055256A /* kk-script.cc */; };
+		1A91582B21196FA90055256A /* kk-ev.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580F21196FA90055256A /* kk-ev.cc */; };
+		1A91582C21196FA90055256A /* kk-wk.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581021196FA90055256A /* kk-wk.cc */; };
+		1A91582D21196FA90055256A /* kk-ws.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581121196FA90055256A /* kk-ws.cc */; };
+		1A91582E21196FA90055256A /* kk-binary.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581221196FA90055256A /* kk-binary.cc */; };
+		1A91582F21196FA90055256A /* kk-object.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581321196FA90055256A /* kk-object.cc */; };
+		1A91583021196FA90055256A /* kk-http.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581421196FA90055256A /* kk-http.cc */; };
+		1A91583121196FA90055256A /* kk-dispatch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581521196FA90055256A /* kk-dispatch.cc */; };
+		1A91583221196FA90055256A /* kk-block.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581621196FA90055256A /* kk-block.cc */; };
+		1A91587E21198D390055256A /* kk-bio.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91587B21198C270055256A /* kk-bio.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A91588021198D4B0055256A /* kk-bio.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91587F21198D4B0055256A /* kk-bio.cc */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		1A91583821196FC60055256A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A91583321196FC60055256A /* KKDuktape.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1AFD6BFD2112A8660038234E;
+			remoteInfo = KKDuktape;
+		};
+		1A91583F21196FCF0055256A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A91583A21196FCF0055256A /* KKEvent.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1AFD6C1F2112AA0F0038234E;
+			remoteInfo = KKEvent;
+		};
+		1A91584121196FD50055256A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A91583321196FC60055256A /* KKDuktape.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AFD6BFC2112A8660038234E;
+			remoteInfo = KKDuktape;
+		};
+		1A91584321196FD70055256A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A91583A21196FCF0055256A /* KKEvent.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 1AFD6C1E2112AA0F0038234E;
+			remoteInfo = KKEvent;
+		};
+		1A915849211972620055256A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A9157E521196F7B0055256A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1A9157ED21196F7B0055256A;
+			remoteInfo = KKObject;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		1A9157EE21196F7B0055256A /* KKObject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KKObject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A9157F121196F7B0055256A /* KKObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKObject.h; sourceTree = "<group>"; };
+		1A9157F221196F7B0055256A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1A9157FA21196FA90055256A /* kk-block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-block.h"; sourceTree = "<group>"; };
+		1A9157FB21196FA90055256A /* kk-binary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-binary.h"; sourceTree = "<group>"; };
+		1A9157FC21196FA90055256A /* kk-string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-string.h"; sourceTree = "<group>"; };
+		1A9157FD21196FA90055256A /* kk-object.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-object.h"; sourceTree = "<group>"; };
+		1A9157FE21196FA90055256A /* kk-ev.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-ev.h"; sourceTree = "<group>"; };
+		1A9157FF21196FA90055256A /* kk-http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-http.h"; sourceTree = "<group>"; };
+		1A91580021196FA90055256A /* kk-event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-event.h"; sourceTree = "<group>"; };
+		1A91580121196FA90055256A /* kk-dispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-dispatch.h"; sourceTree = "<group>"; };
+		1A91580221196FA90055256A /* kk-crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-crypto.h"; sourceTree = "<group>"; };
+		1A91580321196FA90055256A /* kk-script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-script.h"; sourceTree = "<group>"; };
+		1A91580421196FA90055256A /* kk-chan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-chan.h"; sourceTree = "<group>"; };
+		1A91580521196FA90055256A /* kk-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-config.h"; sourceTree = "<group>"; };
+		1A91580621196FA90055256A /* kk-wk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-wk.h"; sourceTree = "<group>"; };
+		1A91580721196FA90055256A /* kk-ws.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-ws.h"; sourceTree = "<group>"; };
+		1A91580921196FA90055256A /* kk-atomic-pthread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-atomic-pthread.cc"; sourceTree = "<group>"; };
+		1A91580A21196FA90055256A /* kk-crypto.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-crypto.cc"; sourceTree = "<group>"; };
+		1A91580B21196FA90055256A /* kk-chan.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-chan.cc"; sourceTree = "<group>"; };
+		1A91580C21196FA90055256A /* kk-event.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-event.cc"; sourceTree = "<group>"; };
+		1A91580D21196FA90055256A /* kk-string.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-string.cc"; sourceTree = "<group>"; };
+		1A91580E21196FA90055256A /* kk-script.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-script.cc"; sourceTree = "<group>"; };
+		1A91580F21196FA90055256A /* kk-ev.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-ev.cc"; sourceTree = "<group>"; };
+		1A91581021196FA90055256A /* kk-wk.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-wk.cc"; sourceTree = "<group>"; };
+		1A91581121196FA90055256A /* kk-ws.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-ws.cc"; sourceTree = "<group>"; };
+		1A91581221196FA90055256A /* kk-binary.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-binary.cc"; sourceTree = "<group>"; };
+		1A91581321196FA90055256A /* kk-object.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-object.cc"; sourceTree = "<group>"; };
+		1A91581421196FA90055256A /* kk-http.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-http.cc"; sourceTree = "<group>"; };
+		1A91581521196FA90055256A /* kk-dispatch.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-dispatch.cc"; sourceTree = "<group>"; };
+		1A91581621196FA90055256A /* kk-block.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-block.cc"; sourceTree = "<group>"; };
+		1A91583321196FC60055256A /* KKDuktape.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KKDuktape.xcodeproj; path = "../../kk-duktape/KKDuktape/KKDuktape.xcodeproj"; sourceTree = "<group>"; };
+		1A91583A21196FCF0055256A /* KKEvent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KKEvent.xcodeproj; path = "../../kk-event/KKEvent/KKEvent.xcodeproj"; sourceTree = "<group>"; };
+		1A91587B21198C270055256A /* kk-bio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kk-bio.h"; sourceTree = "<group>"; };
+		1A91587F21198D4B0055256A /* kk-bio.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-bio.cc"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A9157EA21196F7B0055256A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A9157E421196F7B0055256A = {
+			isa = PBXGroup;
+			children = (
+				1A91583321196FC60055256A /* KKDuktape.xcodeproj */,
+				1A91583A21196FCF0055256A /* KKEvent.xcodeproj */,
+				1A9157F021196F7B0055256A /* KKObject */,
+				1A9157EF21196F7B0055256A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A9157EF21196F7B0055256A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A9157EE21196F7B0055256A /* KKObject.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1A9157F021196F7B0055256A /* KKObject */ = {
+			isa = PBXGroup;
+			children = (
+				1A9157F921196FA90055256A /* include */,
+				1A91580821196FA90055256A /* src */,
+				1A9157F121196F7B0055256A /* KKObject.h */,
+				1A9157F221196F7B0055256A /* Info.plist */,
+			);
+			path = KKObject;
+			sourceTree = "<group>";
+		};
+		1A9157F921196FA90055256A /* include */ = {
+			isa = PBXGroup;
+			children = (
+				1A91580521196FA90055256A /* kk-config.h */,
+				1A9157FD21196FA90055256A /* kk-object.h */,
+				1A9157FC21196FA90055256A /* kk-string.h */,
+				1A91580321196FA90055256A /* kk-script.h */,
+				1A9157FB21196FA90055256A /* kk-binary.h */,
+				1A9157FA21196FA90055256A /* kk-block.h */,
+				1A91580421196FA90055256A /* kk-chan.h */,
+				1A91580121196FA90055256A /* kk-dispatch.h */,
+				1A9157FE21196FA90055256A /* kk-ev.h */,
+				1A9157FF21196FA90055256A /* kk-http.h */,
+				1A91580021196FA90055256A /* kk-event.h */,
+				1A91580221196FA90055256A /* kk-crypto.h */,
+				1A91580621196FA90055256A /* kk-wk.h */,
+				1A91580721196FA90055256A /* kk-ws.h */,
+				1A91587B21198C270055256A /* kk-bio.h */,
+			);
+			name = include;
+			path = ../include;
+			sourceTree = SOURCE_ROOT;
+		};
+		1A91580821196FA90055256A /* src */ = {
+			isa = PBXGroup;
+			children = (
+				1A91580921196FA90055256A /* kk-atomic-pthread.cc */,
+				1A91580A21196FA90055256A /* kk-crypto.cc */,
+				1A91580B21196FA90055256A /* kk-chan.cc */,
+				1A91580C21196FA90055256A /* kk-event.cc */,
+				1A91580D21196FA90055256A /* kk-string.cc */,
+				1A91580E21196FA90055256A /* kk-script.cc */,
+				1A91580F21196FA90055256A /* kk-ev.cc */,
+				1A91581021196FA90055256A /* kk-wk.cc */,
+				1A91581121196FA90055256A /* kk-ws.cc */,
+				1A91581221196FA90055256A /* kk-binary.cc */,
+				1A91581321196FA90055256A /* kk-object.cc */,
+				1A91581421196FA90055256A /* kk-http.cc */,
+				1A91581521196FA90055256A /* kk-dispatch.cc */,
+				1A91581621196FA90055256A /* kk-block.cc */,
+				1A91587F21198D4B0055256A /* kk-bio.cc */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = SOURCE_ROOT;
+		};
+		1A91583421196FC60055256A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A91583921196FC60055256A /* KKDuktape.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1A91583B21196FCF0055256A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A91584021196FCF0055256A /* KKEvent.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1A9157EB21196F7B0055256A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A91582421196FA90055256A /* kk-ws.h in Headers */,
+				1A91581C21196FA90055256A /* kk-http.h in Headers */,
+				1A91581721196FA90055256A /* kk-block.h in Headers */,
+				1A91582021196FA90055256A /* kk-script.h in Headers */,
+				1A91581821196FA90055256A /* kk-binary.h in Headers */,
+				1A91582321196FA90055256A /* kk-wk.h in Headers */,
+				1A91582121196FA90055256A /* kk-chan.h in Headers */,
+				1A91581F21196FA90055256A /* kk-crypto.h in Headers */,
+				1A9157F321196F7B0055256A /* KKObject.h in Headers */,
+				1A91581E21196FA90055256A /* kk-dispatch.h in Headers */,
+				1A91581B21196FA90055256A /* kk-ev.h in Headers */,
+				1A91587E21198D390055256A /* kk-bio.h in Headers */,
+				1A91582221196FA90055256A /* kk-config.h in Headers */,
+				1A91581D21196FA90055256A /* kk-event.h in Headers */,
+				1A91581A21196FA90055256A /* kk-object.h in Headers */,
+				1A91581921196FA90055256A /* kk-string.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1A9157ED21196F7B0055256A /* KKObject */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A9157F621196F7B0055256A /* Build configuration list for PBXNativeTarget "KKObject" */;
+			buildPhases = (
+				1A9157E921196F7B0055256A /* Sources */,
+				1A9157EA21196F7B0055256A /* Frameworks */,
+				1A9157EB21196F7B0055256A /* Headers */,
+				1A9157EC21196F7B0055256A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1A91584421196FD70055256A /* PBXTargetDependency */,
+				1A91584221196FD50055256A /* PBXTargetDependency */,
+			);
+			name = KKObject;
+			productName = KKObject;
+			productReference = 1A9157EE21196F7B0055256A /* KKObject.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A9157E521196F7B0055256A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = kkmofang.cn;
+				TargetAttributes = {
+					1A9157ED21196F7B0055256A = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					1A915845211972510055256A = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 1A9157E821196F7B0055256A /* Build configuration list for PBXProject "KKObject" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1A9157E421196F7B0055256A;
+			productRefGroup = 1A9157EF21196F7B0055256A /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1A91583421196FC60055256A /* Products */;
+					ProjectRef = 1A91583321196FC60055256A /* KKDuktape.xcodeproj */;
+				},
+				{
+					ProductGroup = 1A91583B21196FCF0055256A /* Products */;
+					ProjectRef = 1A91583A21196FCF0055256A /* KKEvent.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				1A9157ED21196F7B0055256A /* KKObject */,
+				1A915845211972510055256A /* KKObject.framework */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1A91583921196FC60055256A /* KKDuktape.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KKDuktape.framework;
+			remoteRef = 1A91583821196FC60055256A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1A91584021196FCF0055256A /* KKEvent.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KKEvent.framework;
+			remoteRef = 1A91583F21196FCF0055256A /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A9157EC21196F7B0055256A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1A91584B211972640055256A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\nFMK_NAME=${PROJECT_NAME}\n\nINSTALL_DIR=${SRCROOT}/../${FMK_NAME}.framework\n\nWRK_DIR=build\n\nDEVICE_DIR=${WRK_DIR}/Release-iphoneos/${FMK_NAME}.framework\n\nSIMULATOR_DIR=${WRK_DIR}/Release-iphonesimulator/${FMK_NAME}.framework\n\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphoneos clean build\n\nxcodebuild -configuration \"Release\" -target \"${FMK_NAME}\" -sdk iphonesimulator clean build\n\nif [ -d \"${INSTALL_DIR}\" ]\n\nthen\n\nrm -rf \"${INSTALL_DIR}\"\n\nfi\n\nmkdir -p \"${INSTALL_DIR}\"\n\ncp -R \"${DEVICE_DIR}/\" \"${INSTALL_DIR}/\"\n\nlipo -create \"${DEVICE_DIR}/${FMK_NAME}\" \"${SIMULATOR_DIR}/${FMK_NAME}\" -output \"${INSTALL_DIR}/${FMK_NAME}\"\n\nrm -r \"${WRK_DIR}\"\n\nopen \"${INSTALL_DIR}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A9157E921196F7B0055256A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A91582E21196FA90055256A /* kk-binary.cc in Sources */,
+				1A91583121196FA90055256A /* kk-dispatch.cc in Sources */,
+				1A91582821196FA90055256A /* kk-event.cc in Sources */,
+				1A91582C21196FA90055256A /* kk-wk.cc in Sources */,
+				1A91582621196FA90055256A /* kk-crypto.cc in Sources */,
+				1A91582F21196FA90055256A /* kk-object.cc in Sources */,
+				1A91582A21196FA90055256A /* kk-script.cc in Sources */,
+				1A91588021198D4B0055256A /* kk-bio.cc in Sources */,
+				1A91582D21196FA90055256A /* kk-ws.cc in Sources */,
+				1A91582B21196FA90055256A /* kk-ev.cc in Sources */,
+				1A91582921196FA90055256A /* kk-string.cc in Sources */,
+				1A91583021196FA90055256A /* kk-http.cc in Sources */,
+				1A91582521196FA90055256A /* kk-atomic-pthread.cc in Sources */,
+				1A91582721196FA90055256A /* kk-chan.cc in Sources */,
+				1A91583221196FA90055256A /* kk-block.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		1A91584221196FD50055256A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KKDuktape;
+			targetProxy = 1A91584121196FD50055256A /* PBXContainerItemProxy */;
+		};
+		1A91584421196FD70055256A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = KKEvent;
+			targetProxy = 1A91584321196FD70055256A /* PBXContainerItemProxy */;
+		};
+		1A91584A211972620055256A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1A9157ED21196F7B0055256A /* KKObject */;
+			targetProxy = 1A915849211972620055256A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1A9157F421196F7B0055256A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1A9157F521196F7B0055256A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1A9157F721196F7B0055256A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = ../lib;
+				INFOPLIST_FILE = KKObject/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.KKObject;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A9157F821196F7B0055256A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = ../lib;
+				INFOPLIST_FILE = KKObject/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				LINK_WITH_STANDARD_LIBRARIES = NO;
+				MACH_O_TYPE = staticlib;
+				PRODUCT_BUNDLE_IDENTIFIER = cn.kkmofang.KKObject;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1A915847211972510055256A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		1A915848211972510055256A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A9157E821196F7B0055256A /* Build configuration list for PBXProject "KKObject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A9157F421196F7B0055256A /* Debug */,
+				1A9157F521196F7B0055256A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A9157F621196F7B0055256A /* Build configuration list for PBXNativeTarget "KKObject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A9157F721196F7B0055256A /* Debug */,
+				1A9157F821196F7B0055256A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A915846211972510055256A /* Build configuration list for PBXAggregateTarget "KKObject.framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A915847211972510055256A /* Debug */,
+				1A915848211972510055256A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1A9157E521196F7B0055256A /* Project object */;
+}
