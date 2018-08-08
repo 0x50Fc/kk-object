@@ -325,9 +325,11 @@ namespace kk {
             duk_push_string(ctx, isa->name);
             duk_push_object(ctx);
             
-            duk_push_string(ctx, "alloc");
-            duk_push_c_function(ctx, isa->alloc, 0);
-            duk_put_prop(ctx, -3);
+            if(isa->alloc) {
+                duk_push_string(ctx, "alloc");
+                duk_push_c_function(ctx, isa->alloc, 0);
+                duk_put_prop(ctx, -3);
+            }
             
             if(isa->prototype) {
                 (*isa->prototype)(ctx);
@@ -365,9 +367,11 @@ namespace kk {
             
             duk_push_object(ctx);
             
-            duk_push_string(ctx, "alloc");
-            duk_push_c_function(ctx, isa->alloc, 0);
-            duk_put_prop(ctx, -3);
+            if(isa->alloc) {
+                duk_push_string(ctx, "alloc");
+                duk_push_c_function(ctx, isa->alloc, 0);
+                duk_put_prop(ctx, -3);
+            }
             
             if(isa->prototype) {
                 (*isa->prototype)(ctx);

@@ -98,7 +98,7 @@ namespace kk {
     size_t Bio::decode(Int64 *value,Byte * data, size_t size) {
         assert(size >= INT64_BYTES);
         Int64 v =0,cv;
-        int c = INT32_BYTES;
+        int c = INT64_BYTES;
         Ubyte *p = (Ubyte *) data;
         while(c){
             cv = *p;

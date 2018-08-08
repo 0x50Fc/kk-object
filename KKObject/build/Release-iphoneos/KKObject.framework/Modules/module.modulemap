@@ -1,0 +1,6 @@
+framework module KKObject {
+  umbrella header "KKObject.h"
+
+  export *
+  module * { export * }
+}

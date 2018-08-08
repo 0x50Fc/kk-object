@@ -22,6 +22,36 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1A7CBC5A211ADCD2006DC0A3 /* kk-atomic-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580921196FA90055256A /* kk-atomic-pthread.cc */; };
+		1A7CBC5B211ADCD2006DC0A3 /* kk-crypto.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580A21196FA90055256A /* kk-crypto.cc */; };
+		1A7CBC5C211ADCD2006DC0A3 /* kk-chan.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580B21196FA90055256A /* kk-chan.cc */; };
+		1A7CBC5D211ADCD2006DC0A3 /* kk-event.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580C21196FA90055256A /* kk-event.cc */; };
+		1A7CBC5E211ADCD2006DC0A3 /* kk-string.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580D21196FA90055256A /* kk-string.cc */; };
+		1A7CBC5F211ADCD2006DC0A3 /* kk-script.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580E21196FA90055256A /* kk-script.cc */; };
+		1A7CBC60211ADCD2006DC0A3 /* kk-ev.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580F21196FA90055256A /* kk-ev.cc */; };
+		1A7CBC61211ADCD2006DC0A3 /* kk-wk.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581021196FA90055256A /* kk-wk.cc */; };
+		1A7CBC62211ADCD2006DC0A3 /* kk-ws.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581121196FA90055256A /* kk-ws.cc */; };
+		1A7CBC63211ADCD2006DC0A3 /* kk-binary.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581221196FA90055256A /* kk-binary.cc */; };
+		1A7CBC64211ADCD2006DC0A3 /* kk-object.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581321196FA90055256A /* kk-object.cc */; };
+		1A7CBC65211ADCD2006DC0A3 /* kk-http.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581421196FA90055256A /* kk-http.cc */; };
+		1A7CBC66211ADCD2006DC0A3 /* kk-dispatch.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581521196FA90055256A /* kk-dispatch.cc */; };
+		1A7CBC67211ADCD2006DC0A3 /* kk-block.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581621196FA90055256A /* kk-block.cc */; };
+		1A7CBC68211ADCD2006DC0A3 /* kk-bio.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91587F21198D4B0055256A /* kk-bio.cc */; };
+		1A7CBC69211ADCD8006DC0A3 /* kk-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580521196FA90055256A /* kk-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6A211ADCD8006DC0A3 /* kk-object.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FD21196FA90055256A /* kk-object.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6B211ADCD8006DC0A3 /* kk-string.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FC21196FA90055256A /* kk-string.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6C211ADCD8006DC0A3 /* kk-script.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580321196FA90055256A /* kk-script.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6D211ADCD8006DC0A3 /* kk-binary.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FB21196FA90055256A /* kk-binary.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6E211ADCD8006DC0A3 /* kk-block.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FA21196FA90055256A /* kk-block.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC6F211ADCD8006DC0A3 /* kk-chan.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580421196FA90055256A /* kk-chan.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC70211ADCD8006DC0A3 /* kk-dispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580121196FA90055256A /* kk-dispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC71211ADCD8006DC0A3 /* kk-ev.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FE21196FA90055256A /* kk-ev.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC72211ADCD8006DC0A3 /* kk-http.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FF21196FA90055256A /* kk-http.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC73211ADCD8006DC0A3 /* kk-event.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580021196FA90055256A /* kk-event.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC74211ADCD8006DC0A3 /* kk-crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580221196FA90055256A /* kk-crypto.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC75211ADCD8006DC0A3 /* kk-wk.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580621196FA90055256A /* kk-wk.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC76211ADCD8006DC0A3 /* kk-ws.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580721196FA90055256A /* kk-ws.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1A7CBC77211ADCD8006DC0A3 /* kk-bio.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91587B21198C270055256A /* kk-bio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A9157F321196F7B0055256A /* KKObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157F121196F7B0055256A /* KKObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A91581721196FA90055256A /* kk-block.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FA21196FA90055256A /* kk-block.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A91581821196FA90055256A /* kk-binary.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A9157FB21196FA90055256A /* kk-binary.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -56,6 +86,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1A7CBC9C211ADDCF006DC0A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1A91583321196FC60055256A /* KKDuktape.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1A7CBC7C211ADD25006DC0A3;
+			remoteInfo = KKDuktapeStaticLibrary;
+		};
 		1A91583821196FC60055256A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1A91583321196FC60055256A /* KKDuktape.xcodeproj */;
@@ -94,6 +131,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A7CBC4D211ADC8D006DC0A3 /* libKKObject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKKObject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157EE21196F7B0055256A /* KKObject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KKObject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157F121196F7B0055256A /* KKObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKObject.h; sourceTree = "<group>"; };
 		1A9157F221196F7B0055256A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -132,6 +170,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1A7CBC4A211ADC8D006DC0A3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1A9157EA21196F7B0055256A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -156,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				1A9157EE21196F7B0055256A /* KKObject.framework */,
+				1A7CBC4D211ADC8D006DC0A3 /* libKKObject.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -221,6 +267,7 @@
 			isa = PBXGroup;
 			children = (
 				1A91583921196FC60055256A /* KKDuktape.framework */,
+				1A7CBC9D211ADDCF006DC0A3 /* libKKDuktape.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -236,6 +283,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		1A7CBC4B211ADC8D006DC0A3 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A7CBC71211ADCD8006DC0A3 /* kk-ev.h in Headers */,
+				1A7CBC74211ADCD8006DC0A3 /* kk-crypto.h in Headers */,
+				1A7CBC76211ADCD8006DC0A3 /* kk-ws.h in Headers */,
+				1A7CBC77211ADCD8006DC0A3 /* kk-bio.h in Headers */,
+				1A7CBC6E211ADCD8006DC0A3 /* kk-block.h in Headers */,
+				1A7CBC73211ADCD8006DC0A3 /* kk-event.h in Headers */,
+				1A7CBC72211ADCD8006DC0A3 /* kk-http.h in Headers */,
+				1A7CBC69211ADCD8006DC0A3 /* kk-config.h in Headers */,
+				1A7CBC6C211ADCD8006DC0A3 /* kk-script.h in Headers */,
+				1A7CBC6D211ADCD8006DC0A3 /* kk-binary.h in Headers */,
+				1A7CBC6F211ADCD8006DC0A3 /* kk-chan.h in Headers */,
+				1A7CBC6A211ADCD8006DC0A3 /* kk-object.h in Headers */,
+				1A7CBC70211ADCD8006DC0A3 /* kk-dispatch.h in Headers */,
+				1A7CBC6B211ADCD8006DC0A3 /* kk-string.h in Headers */,
+				1A7CBC75211ADCD8006DC0A3 /* kk-wk.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1A9157EB21196F7B0055256A /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -262,6 +331,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		1A7CBC4C211ADC8D006DC0A3 /* KKObjectStaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A7CBC59211ADC8D006DC0A3 /* Build configuration list for PBXNativeTarget "KKObjectStaticLibrary" */;
+			buildPhases = (
+				1A7CBC49211ADC8D006DC0A3 /* Sources */,
+				1A7CBC4A211ADC8D006DC0A3 /* Frameworks */,
+				1A7CBC4B211ADC8D006DC0A3 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = KKObjectStaticLibrary;
+			productName = KKObjectStaticLibrary;
+			productReference = 1A7CBC4D211ADC8D006DC0A3 /* libKKObject.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		1A9157ED21196F7B0055256A /* KKObject */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A9157F621196F7B0055256A /* Build configuration list for PBXNativeTarget "KKObject" */;
@@ -291,6 +377,9 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = kkmofang.cn;
 				TargetAttributes = {
+					1A7CBC4C211ADC8D006DC0A3 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
 					1A9157ED21196F7B0055256A = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
@@ -323,11 +412,19 @@
 			targets = (
 				1A9157ED21196F7B0055256A /* KKObject */,
 				1A915845211972510055256A /* KKObject.framework */,
+				1A7CBC4C211ADC8D006DC0A3 /* KKObjectStaticLibrary */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		1A7CBC9D211ADDCF006DC0A3 /* libKKDuktape.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libKKDuktape.a;
+			remoteRef = 1A7CBC9C211ADDCF006DC0A3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		1A91583921196FC60055256A /* KKDuktape.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -371,6 +468,28 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1A7CBC49211ADC8D006DC0A3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A7CBC63211ADCD2006DC0A3 /* kk-binary.cc in Sources */,
+				1A7CBC66211ADCD2006DC0A3 /* kk-dispatch.cc in Sources */,
+				1A7CBC5D211ADCD2006DC0A3 /* kk-event.cc in Sources */,
+				1A7CBC61211ADCD2006DC0A3 /* kk-wk.cc in Sources */,
+				1A7CBC5B211ADCD2006DC0A3 /* kk-crypto.cc in Sources */,
+				1A7CBC64211ADCD2006DC0A3 /* kk-object.cc in Sources */,
+				1A7CBC5F211ADCD2006DC0A3 /* kk-script.cc in Sources */,
+				1A7CBC62211ADCD2006DC0A3 /* kk-ws.cc in Sources */,
+				1A7CBC60211ADCD2006DC0A3 /* kk-ev.cc in Sources */,
+				1A7CBC5E211ADCD2006DC0A3 /* kk-string.cc in Sources */,
+				1A7CBC68211ADCD2006DC0A3 /* kk-bio.cc in Sources */,
+				1A7CBC65211ADCD2006DC0A3 /* kk-http.cc in Sources */,
+				1A7CBC5A211ADCD2006DC0A3 /* kk-atomic-pthread.cc in Sources */,
+				1A7CBC5C211ADCD2006DC0A3 /* kk-chan.cc in Sources */,
+				1A7CBC67211ADCD2006DC0A3 /* kk-block.cc in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		1A9157E921196F7B0055256A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +533,46 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		1A7CBC55211ADC8D006DC0A3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../kk-duktape/include",
+					"../../kk-event/include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = KKObject;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		1A7CBC56211ADC8D006DC0A3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 8V7A9F9SCJ;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../kk-duktape/include",
+					"../../kk-event/include",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = KKObject;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		1A9157F421196F7B0055256A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -610,6 +769,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1A7CBC59211ADC8D006DC0A3 /* Build configuration list for PBXNativeTarget "KKObjectStaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A7CBC55211ADC8D006DC0A3 /* Debug */,
+				1A7CBC56211ADC8D006DC0A3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		1A9157E821196F7B0055256A /* Build configuration list for PBXProject "KKObject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
