@@ -12,14 +12,14 @@
 namespace kk {
     
     static Binary * BinaryAllocWithType(BinaryType type) {
-        Binary * v = new Binary();
+        Binary * v = (Binary *) malloc(sizeof(Binary));
         memset(v,0,sizeof(Binary));
         v->type = type;
         return v;
     };
     
     Binary * BinaryAlloc(duk_context * ctx,duk_idx_t idx) {
-        Binary * v = new Binary();
+        Binary * v = (Binary *) malloc(sizeof(Binary));
         memset(v,0,sizeof(Binary));
         v->type = BinaryTypeNil;
         
@@ -197,7 +197,9 @@ namespace kk {
                 free(binary->functionValue.data);
             }
         }
-        delete binary;
+        
+        free(binary);
+        
     }
     
     Binary * BinaryAdd(Binary * p,Binary * binary) {
