@@ -129,6 +129,11 @@ namespace kk {
         static duk_ret_t ScriptObjectAlloc(duk_context * ctx); \
         virtual kk::script::Class * getScriptClass();
 
+#define DEF_SCRIPT_CLASS_NOALLOC \
+public: \
+static kk::script::Class ScriptClass; \
+static void ScriptClassPrototype(duk_context * ctx); \
+virtual kk::script::Class * getScriptClass();
 
 #define IMP_SCRIPT_CLASS_BEGIN(isa,object,name) \
 kk::script::Class object::ScriptClass = {((kk::script::Class *) isa),(#name),(kk::script::ClassPrototypeFunc)&object::ScriptClassPrototype,(duk_c_function) &object::ScriptObjectAlloc} ;\
@@ -138,7 +143,13 @@ duk_ret_t object::ScriptObjectAlloc(duk_context * ctx) { \
 } \
 kk::script::Class * object::getScriptClass() { return &object::ScriptClass; }  \
 void object::ScriptClassPrototype(duk_context * ctx) {
-    
+   
+#define IMP_SCRIPT_CLASS_BEGIN_NOALLOC(isa,object,name) \
+kk::script::Class object::ScriptClass = {((kk::script::Class *) isa),(#name),(kk::script::ClassPrototypeFunc)&object::ScriptClassPrototype,(duk_c_function) nullptr} ;\
+kk::script::Class * object::getScriptClass() { return &object::ScriptClass; }  \
+void object::ScriptClassPrototype(duk_context * ctx) {
+        
+        
 #define IMP_SCRIPT_CLASS_END \
 }
         
