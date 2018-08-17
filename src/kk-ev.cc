@@ -160,10 +160,21 @@ namespace kk {
         
         int top = duk_get_top(ctx);
         
-        if(top > 1 && duk_is_function(ctx, -top) && duk_is_number(ctx, -top +1)) {
+        if(top > 0 && duk_is_function(ctx, -top) ) {
             
             void * fn = duk_get_heapptr(ctx, -top);
-            int tv = duk_to_int(ctx, -top + 1);
+            
+            int tv = 0;
+            
+            if(top > 1) {
+                if(duk_is_number(ctx, -top +1)) {
+                    tv = duk_to_int(ctx, -top + 1);
+                } else if(duk_is_string(ctx, -top + 1)) {
+                    tv = atoi(duk_to_string(ctx, -top  +1));
+                }
+            }
+            
+            
             return ev_newTimer(ctx,fn,tv,0);
         }
         
@@ -174,9 +185,20 @@ namespace kk {
         
         int top = duk_get_top(ctx);
         
-        if(top > 1 && duk_is_function(ctx, -top) && duk_is_number(ctx, -top +1)) {
+        if(top > 0 && duk_is_function(ctx, -top) ) {
+            
             void * fn = duk_get_heapptr(ctx, -top);
-            int tv = duk_to_int(ctx, -top + 1);
+            
+            int tv = 0;
+            
+            if(top > 1) {
+                if(duk_is_number(ctx, -top +1)) {
+                    tv = duk_to_int(ctx, -top + 1);
+                } else if(duk_is_string(ctx, -top + 1)) {
+                    tv = atoi(duk_to_string(ctx, -top  +1));
+                }
+            }
+            
             return ev_newTimer(ctx,fn,tv,tv);
         }
         

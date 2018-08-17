@@ -205,8 +205,9 @@ namespace kk {
     
     duk_ret_t EventEmitter::duk_off(duk_context * ctx) {
         
-        CString name = nullptr;
+        String name;
         Strong func;
+        kk::script::Object * fn = nullptr;
         
         int top = duk_get_top(ctx);
         
@@ -216,9 +217,10 @@ namespace kk {
         
         if(top > 1 && duk_is_function(ctx, -top + 1) ) {
             func = new kk::script::Object(kk::script::GetContext(ctx), - top + 1);
+            fn = (kk::script::Object *) func.get();
         }
         
-        off(name, nullptr, nullptr, (kk::script::Object *) func.get(), nullptr);
+        off(name, nullptr, nullptr, fn, nullptr);
         
         return 0;
         
