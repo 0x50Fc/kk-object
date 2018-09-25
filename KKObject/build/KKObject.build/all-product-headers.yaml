@@ -4,12 +4,12 @@
   'roots': [
     {
       'type': 'directory',
-      'name': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphonesimulator/KKObject.framework/Headers",
+      'name': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphoneos/KKObject.framework/Headers",
       'contents': [
         {
           'type': 'file',
           'name': "KKObject-Swift.h",
-          'external-contents': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphonesimulator/KKObject.framework/Headers/KKObject-Swift.h"
+          'external-contents': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphoneos/KKObject.framework/Headers/KKObject-Swift.h"
         },
         {
           'type': 'file',
@@ -95,12 +95,12 @@
     },
     {
       'type': 'directory',
-      'name': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphonesimulator/KKObject.framework/Modules",
+      'name': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/Release-iphoneos/KKObject.framework/Modules",
       'contents': [
         {
           'type': 'file',
           'name': "module.modulemap",
-          'external-contents': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/KKObject.build/Release-iphonesimulator/KKObject.build/module.modulemap"
+          'external-contents': "/Users/hailong11/Documents/src/github.com/hailongz/kk-object/KKObject/build/KKObject.build/Release-iphoneos/KKObject.build/module.modulemap"
         }
       ]
     }

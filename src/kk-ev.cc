@@ -78,18 +78,29 @@ namespace kk {
             
         }
         
-        duk_pop_n(ctx,2);
+        duk_pop(ctx);
         
-        if(v->tv.tv_sec || v->tv.tv_usec) {
-            evtimer_add(v->event, &v->tv);
-        } else {
+        duk_push_sprintf(ctx, "__0x%x",(long) v);
+        duk_get_prop(ctx, -2);
+        
+        if(duk_is_object(ctx, -1)) {
             
-            duk_push_global_object(ctx);
-            duk_push_sprintf(ctx, "__0x%x",(long) v);
-            duk_del_prop(ctx, -2);
             duk_pop(ctx);
             
+            if(v->tv.tv_sec || v->tv.tv_usec) {
+                evtimer_add(v->event, &v->tv);
+            } else {
+                
+                duk_push_sprintf(ctx, "__0x%x",(long) v);
+                duk_del_prop(ctx, -2);
+                
+            }
+            
+        } else {
+            duk_pop(ctx);
         }
+        
+        duk_pop(ctx);
         
     }
     
