@@ -121,6 +121,27 @@ namespace kk {
         
         duk_int_t decodeJSON(duk_context * ctx, kk::CString text, size_t n);
         
+        kk::String toString(duk_context * ctx, duk_idx_t idx);
+        
+        kk::Double toDouble(duk_context * ctx, duk_idx_t idx);
+        
+        kk::Int toInt(duk_context * ctx, duk_idx_t idx);
+        
+        kk::Uint toUint(duk_context * ctx, duk_idx_t idx);
+        
+        kk::Boolean toBoolean(duk_context * ctx, duk_idx_t idx);
+        
+        kk::Int toIntArgument(duk_context * ctx, duk_idx_t i,kk::Int defaultValue);
+        
+        kk::Uint toUintArgument(duk_context * ctx, duk_idx_t i,kk::Uint defaultValue);
+        
+        kk::Double toDoubleArgument(duk_context * ctx, duk_idx_t i,kk::Double defaultValue);
+        
+        kk::String toStringArgument(duk_context * ctx, duk_idx_t i,kk::CString defaultValue);
+        
+        kk::Boolean toBooleanArgument(duk_context * ctx, duk_idx_t i,kk::Boolean defaultValue);
+        
+        kk::Object * toObjectArgument(duk_context * ctx, duk_idx_t i);
         
 #define DEF_SCRIPT_CLASS \
     public: \
@@ -152,8 +173,40 @@ void object::ScriptClassPrototype(duk_context * ctx) {
         
 #define IMP_SCRIPT_CLASS_END \
 }
+ 
+#define DEF_SCRIPT_METHOD(name) virtual duk_ret_t duk_##name(duk_context * ctx);
+#define IMP_SCRIPT_METHOD(object,name) {#name,(kk::script::Function) &object::duk_##name},
         
+#define DEF_SCRIPT_PROPERTY_READONLY(name) duk_ret_t duk_##name(duk_context * ctx);
+        
+#define DEF_SCRIPT_PROPERTY(name,Name) duk_ret_t duk_##name(duk_context * ctx); \
+duk_ret_t duk_set##Name(duk_context * ctx);
+        
+#define IMP_SCRIPT_PROPERTY_READONLY(object,name) {#name,(kk::script::Function) &object::duk_##name,(kk::script::Function) nullptr},
+        
+#define IMP_SCRIPT_PROPERTY(object,name,Name) {#name,(kk::script::Function) &object::duk_##name,(kk::script::Function) &object::duk_set##Name},
 
+#define IMP_SCRIPT_CONST_STRING(name,value) \
+{ \
+    duk_push_string(ctx,#name); \
+    duk_push_string(ctx,#value); \
+    duk_def_prop(ctx,-3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_CONFIGURABLE |DUK_DEFPROP_CLEAR_WRITABLE); \
+}
+        
+#define IMP_SCRIPT_CONST_INT(name,value) \
+{ \
+    duk_push_string(ctx,#name); \
+    duk_push_int(ctx,value); \
+    duk_def_prop(ctx,-3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_CONFIGURABLE |DUK_DEFPROP_CLEAR_WRITABLE); \
+}
+        
+#define IMP_SCRIPT_CONST_UINT(name,value) \
+{ \
+duk_push_string(ctx,#name); \
+duk_push_uint(ctx,value); \
+duk_def_prop(ctx,-3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_CONFIGURABLE |DUK_DEFPROP_CLEAR_WRITABLE); \
+}
+        
     }
     
    

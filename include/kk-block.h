@@ -70,13 +70,19 @@ namespace kk {
 
 #define BK_COPY(name,data) __BK_CTX.as<kk::BlockContext>()->add(#name,(void *) &(data),sizeof(data));\
 
+#define BK_CSTRING(name,v) __BK_CTX.as<kk::BlockContext>()->add(#name,(void *)(v),strlen(v) + 1);\
+
 #define BK_PTR(name,ptr,dealloc) __BK_CTX.as<kk::BlockContext>()->add(#name,(void *) (ptr),(kk::BlockPtrDeallocFunc)(dealloc));\
 
 #define BK_GET(name,type) type * name = (type *) __BK_CTX->get(#name);\
 
+#define BK_GET_VAR(name,type) type name = (type) __BK_CTX->get(#name);\
+
+#define BK_GET_STRONG(name) kk::Strong name = (kk::Object *) __BK_CTX->get(#name);\
+
 #define BK_ARG (__BK_CTX.as<kk::BlockContext>())
     
-#define BK_DEF_ARG BlockContext * __BK_CTX
+#define BK_DEF_ARG kk::BlockContext * __BK_CTX
     
 }
 

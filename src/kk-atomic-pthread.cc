@@ -50,7 +50,7 @@ namespace kk {
                 
                 pthread_mutex_unlock(&_objectLock);
                 
-                if(v != nullptr) {
+                if(v != nullptr && v->retainCount() == 0) {
                     delete v;
                 }
                 

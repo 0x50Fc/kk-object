@@ -87,9 +87,17 @@ namespace kk {
     
     static void DispatchQueueRunSIGPIPE(evutil_socket_t fd, short ev, void * ctx) {}
 
+    static pthread_key_t gDispatchQueueKey = 0;
+    
     void * DispatchQueueRun(void * data) {
         
         DispatchQueue * queue = (DispatchQueue *) data;
+        
+        if(gDispatchQueueKey == 0) {
+            pthread_key_create(&gDispatchQueueKey, nullptr);
+        }
+        
+        pthread_setspecific(gDispatchQueueKey, queue);
         
 #ifndef KK_PLATFORM_LINUX
         pthread_setname_np(queue->name());
@@ -107,12 +115,18 @@ namespace kk {
         
         event_free(s);
         
+        pthread_setspecific(gDispatchQueueKey, nullptr);
+        
         pthread_exit(nullptr);
         
         return nullptr;
     }
     
+    
+    
     void DispatchQueue::run() {
+        
+        
         
         do {
             
@@ -151,6 +165,13 @@ namespace kk {
         _event = evtimer_new(_base, DispatchQueueCB, this);
         evtimer_add(_event, &tv);
         pthread_create(&_pid, nullptr, DispatchQueueRun, this);
+    }
+    
+    DispatchQueue * DispatchQueue::current() {
+        if(gDispatchQueueKey != 0) {
+            return (DispatchQueue *) pthread_getspecific(gDispatchQueueKey);
+        }
+        return nullptr;
     }
     
     DispatchQueue::DispatchQueue(kk::CString name,event_base * base):_name(name) {

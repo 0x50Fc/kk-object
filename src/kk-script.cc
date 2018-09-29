@@ -8,6 +8,7 @@
 
 #include "kk-config.h"
 #include "kk-script.h"
+#include "kk-string.h"
 
 namespace kk {
     
@@ -279,7 +280,7 @@ namespace kk {
             
             duk_push_string(ctx, "__object");
             duk_push_pointer(ctx, object);
-            duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_CLEAR_WRITABLE);
+            duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE | DUK_DEFPROP_CLEAR_ENUMERABLE);
             
             object->retain();
             
@@ -584,6 +585,113 @@ namespace kk {
             duk_push_lstring(ctx, text, n);
             return duk_safe_call(ctx, decodeJSON_func, nullptr, 1, 1);
         }
+        
+        kk::String toString(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                return duk_to_string(ctx, idx);
+            } else if(duk_is_number(ctx, idx)) {
+                char fmt[255];
+                snprintf(fmt, sizeof(fmt), "%g",duk_to_number(ctx, idx));
+                return fmt;
+            } else if(duk_is_boolean(ctx, idx)) {
+                return duk_to_boolean(ctx, idx) ? "true":"false";
+            }
+            return "";
+        }
+        
+        kk::Double toDouble(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                return atof(duk_to_string(ctx, idx));
+            } else if(duk_is_number(ctx, idx)) {
+                return duk_to_number(ctx, idx);
+            } else if(duk_is_boolean(ctx, idx)) {
+                return duk_to_boolean(ctx, idx) ? 1 : 0;
+            }
+            return 0;
+        }
+        
+        kk::Int toInt(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                return atoi(duk_to_string(ctx, idx));
+            } else if(duk_is_number(ctx, idx)) {
+                return duk_to_int(ctx, idx);
+            } else if(duk_is_boolean(ctx, idx)) {
+                return duk_to_boolean(ctx, idx) ? 1 : 0;
+            }
+            return 0;
+        }
+        
+        kk::Uint toUint(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                return (kk::Uint) atol(duk_to_string(ctx, idx));
+            } else if(duk_is_number(ctx, idx)) {
+                return duk_to_uint(ctx, idx);
+            } else if(duk_is_boolean(ctx, idx)) {
+                return duk_to_boolean(ctx, idx) ? 1 : 0;
+            }
+            return 0;
+        }
+        
+        kk::Boolean toBoolean(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                kk::CString v = duk_to_string(ctx, idx);
+                return CStringEqual(v, "true");
+            } else if(duk_is_number(ctx, idx)) {
+                return duk_to_number(ctx, idx) != 0;
+            } else if(duk_is_boolean(ctx, idx)) {
+                return duk_to_boolean(ctx, idx) ? true : false;
+            }
+            return 0;
+        }
+        
+        kk::Int toIntArgument(duk_context * ctx, duk_idx_t i,kk::Int defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toInt(ctx, -top + i);
+            }
+            return defaultValue;
+        }
+        
+        kk::Uint toUintArgument(duk_context * ctx, duk_idx_t i,kk::Uint defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toUint(ctx, -top + i);
+            }
+            return defaultValue;
+        }
+        
+        kk::Double toDoubleArgument(duk_context * ctx, duk_idx_t i,kk::Double defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toDouble(ctx, -top + i);
+            }
+            return defaultValue;
+        }
+        
+        kk::String toStringArgument(duk_context * ctx, duk_idx_t i,kk::CString defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toString(ctx, -top + i);
+            }
+            return defaultValue == nullptr ? "" : defaultValue;
+        }
+        
+        kk::Boolean toBooleanArgument(duk_context * ctx, duk_idx_t i,kk::Boolean defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toBoolean(ctx, -top + i);
+            }
+            return defaultValue;
+        }
+        
+        kk::Object * toObjectArgument(duk_context * ctx, duk_idx_t i) {
+            int top = duk_get_top(ctx);
+            if(i < top && duk_is_object(ctx, -top + i)) {
+                return GetObject(ctx, -top + i);
+            }
+            return nullptr;
+        }
+        
         
     }
 }

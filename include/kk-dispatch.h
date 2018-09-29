@@ -47,6 +47,9 @@ namespace kk {
         virtual void loopbreak();
         virtual void join();
         virtual kk::CString name();
+        
+        static DispatchQueue * current();
+        
     protected:
         virtual void run();
         kk::Chan * _chan;
