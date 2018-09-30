@@ -69,13 +69,15 @@ namespace kk {
             
             duk_push_string(_jsContext, "__jsContext");
             duk_push_pointer(_jsContext, this);
-            duk_put_prop(_jsContext, -3);
+            duk_def_prop(_jsContext, -3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE | DUK_DEFPROP_CLEAR_ENUMERABLE);
             
             duk_push_string(_jsContext, "print");
             duk_push_c_function(_jsContext, Context_print_function, DUK_VARARGS);
             duk_put_prop(_jsContext, -3);
-            
+
             duk_pop(_jsContext);
+            
+            OpenlibWeakMap(_jsContext);
             
         }
         
@@ -89,6 +91,10 @@ namespace kk {
             }
             
             duk_destroy_heap(_jsContext);
+            
+        }
+        
+        void debugger(int port) {
             
         }
         
@@ -586,6 +592,16 @@ namespace kk {
             return duk_safe_call(ctx, decodeJSON_func, nullptr, 1, 1);
         }
         
+        static duk_ret_t compile_func (duk_context *ctx, void *udata) {
+            duk_compile_string_filename(ctx, 0, (kk::CString) udata);
+            return 0;
+        }
+        
+        void compile(duk_context * ctx, kk::CString code , kk::CString filename) {
+            duk_push_string(ctx, filename);
+            duk_safe_call(ctx, compile_func, (void *) code, 1, 0);
+        }
+        
         kk::String toString(duk_context * ctx, duk_idx_t idx) {
             if(duk_is_string(ctx, idx)) {
                 return duk_to_string(ctx, idx);
@@ -692,6 +708,452 @@ namespace kk {
             return nullptr;
         }
         
+        class WeakObject {
+        public:
+            
+            virtual ~WeakObject() {
+                
+            }
+            
+            virtual void recycle(duk_context * ctx,void * heapptr) {
+                
+                {
+                    std::set<void **>::iterator i = _weaks.begin();
+                    while(i != _weaks.end()) {
+                        void ** p = * i;
+                        *p = nullptr;
+                        i ++;
+                    }
+                }
+                
+                {
+                    std::set<IWeakObject *>::iterator i = _objects.begin();
+                    while(i != _objects.end()) {
+                        IWeakObject * v = * i;
+                        v->recycle(ctx, heapptr);
+                        i ++;
+                    }
+                }
+            }
+            
+            virtual void weak(void **heapptr) {
+                _weaks.insert(heapptr);
+            }
+            
+            virtual void unweak(void ** heapptr) {
+                std::set<void **>::iterator i = _weaks.find(heapptr);
+                if(i != _weaks.end()) {
+                    _weaks.erase(i);
+                }
+            }
+            
+            virtual void weakObject(IWeakObject * object) {
+                _objects.insert(object);
+            }
+            
+            virtual void unweakObject(IWeakObject * object) {
+                std::set<IWeakObject *>::iterator i = _objects.find(object);
+                if(i != _objects.end()) {
+                    _objects.erase(i);
+                }
+            }
+            
+        protected:
+            std::set<void **> _weaks;
+            std::set<IWeakObject *> _objects;
+        };
+        
+        static duk_ret_t WeakObject_dealloc(duk_context * ctx) {
+            
+            WeakObject * v = nullptr;
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                v =  (WeakObject *) duk_to_pointer(ctx, -1);
+            }
+            
+            duk_pop(ctx);
+            
+            if(v) {
+                v->recycle(ctx,duk_get_heapptr(ctx, -1));
+                delete v;
+            }
+            
+            return 0;
+        }
+        
+        static WeakObject * duk_getWeakObject(duk_context * ctx, duk_idx_t idx) {
+            
+            if(duk_is_object(ctx, idx) || duk_is_function(ctx, idx)) {
+                
+                WeakObject * v = nullptr;
+                
+                duk_get_prop_string(ctx, idx, "__weakObject");
+                
+                if(duk_is_object(ctx, -1)) {
+                    
+                    duk_get_prop_string(ctx, -1, "__object");
+                    
+                    if(duk_is_pointer(ctx, -1)) {
+                        v = (WeakObject *) duk_to_pointer(ctx, -1);
+                    }
+                    
+                    duk_pop_2(ctx);
+                    
+                } else {
+                    duk_pop(ctx);
+                }
+                
+                if(v == nullptr) {
+                    
+                    v = new WeakObject();
+                    
+                    duk_push_string(ctx, "__weakObject");
+                    
+                    duk_push_object(ctx);
+                    {
+                        duk_push_string(ctx, "__object");
+                        duk_push_pointer(ctx, v);
+                        duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
+                        
+                        duk_push_c_function(ctx, WeakObject_dealloc, 1);
+                        duk_set_finalizer(ctx, -2);
+                    }
+                    duk_def_prop(ctx, idx - 1, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
+                }
+                
+                return v;
+                
+            }
+            
+            return nullptr;
+        }
+        
+        void duk_weak(duk_context * ctx, duk_idx_t idx,void ** heapptr) {
+            
+            WeakObject * v = duk_getWeakObject(ctx, idx);
+            
+            if(v != nullptr) {
+                * heapptr = duk_get_heapptr(ctx, idx);
+                v->weak(heapptr);
+            }
+            
+        }
+        
+        void duk_unweak(duk_context * ctx, void ** heapptr) {
+            
+            if(*heapptr != nullptr) {
+                
+                duk_push_heapptr(ctx, *heapptr);
+                
+                WeakObject * v = duk_getWeakObject(ctx, -1);
+                
+                if(v != nullptr) {
+                    v->unweak(heapptr);
+                }
+                
+                duk_pop(ctx);
+                
+            }
+            
+            * heapptr = nullptr;
+        }
+        
+        void duk_weakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object) {
+            
+            WeakObject * v = duk_getWeakObject(ctx, idx);
+            
+            if(v != nullptr) {
+                v->weakObject(object);
+            }
+            
+        }
+        
+        void duk_unweakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object) {
+            
+            WeakObject * v = duk_getWeakObject(ctx, idx);
+            
+            if(v != nullptr) {
+                v->unweakObject(object);
+            }
+            
+        }
+        
+        class WeakMap : public IWeakObject {
+        public:
+            
+            WeakMap() {
+                
+            }
+            
+            virtual void recycle(duk_context * ctx) {
+                std::set<void *>::iterator i = _keys.begin();
+                while(i != _keys.end()) {
+                    void * p = *i;
+                    duk_push_heapptr(ctx, p);
+                    duk_unweakObject(ctx, -1, this);
+                    duk_pop(ctx);
+                    i++;
+                }
+            }
+            
+            virtual void recycle(duk_context * ctx,void * heapptr) {
+                std::set<void *>::iterator i = _keys.find(heapptr);
+                if(i != _keys.end()) {
+                    _keys.erase(i);
+                }
+            }
+            
+            virtual duk_ret_t set(duk_context * ctx) {
+                
+                void * key = duk_get_heapptr(ctx, -2);
+
+                std::set<void *>::iterator i = _keys.find(key);
+                
+                if(i == _keys.end()) {
+                    duk_weakObject(ctx, -2, this);
+                    _keys.insert(key);
+                }
+                
+                duk_push_this(ctx);
+                
+                duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                duk_dup(ctx, -3);
+                duk_put_prop(ctx, -3);
+                
+                duk_pop(ctx);
+                
+                return 0;
+            }
+            
+            virtual duk_ret_t has(duk_context * ctx) {
+                void * key = duk_get_heapptr(ctx, -1);
+                std::set<void *>::iterator i  = _keys.find(key);
+                if(i != _keys.end()) {
+                    duk_push_boolean(ctx, true);
+                    return 1;
+                }
+                duk_push_boolean(ctx, false);
+                return 1;
+            }
+            
+            virtual duk_ret_t get(duk_context * ctx) {
+                void * key = duk_get_heapptr(ctx, -1);
+                std::set<void *>::iterator i  = _keys.find(key);
+                
+                if(i != _keys.end()) {
+                    
+                    duk_push_this(ctx);
+                    
+                    duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                    duk_get_prop(ctx, -2);
+                    
+                    duk_remove(ctx, -2);
+                    
+                    return 1;
+                }
+                
+                duk_push_undefined(ctx);
+                
+                return 1;
+            }
+            
+            virtual duk_ret_t remove(duk_context * ctx) {
+                
+                void * key = duk_get_heapptr(ctx, -1);
+                
+                std::set<void *>::iterator i  = _keys.find(key);
+                
+                if(i != _keys.end()) {
+                    
+                    duk_push_this(ctx);
+                    
+                    duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                    duk_del_prop(ctx, -2);
+                    
+                    duk_pop(ctx);
+                    
+                    duk_unweakObject(ctx, -1, this);
+                    
+                    _keys.erase(i);
+                }
+                
+                return 0;
+            }
+            
+        protected:
+            std::set<void *> _keys;
+        };
+        
+        
+        static duk_ret_t WeakMap_dealloc(duk_context * ctx) {
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                WeakMap * v = (WeakMap *) duk_to_pointer(ctx, -1);
+                v->recycle(ctx);
+                delete v;
+            }
+            
+            duk_pop(ctx);
+            
+            return 0;
+        }
+        
+        static duk_ret_t WeakMap_alloc(duk_context * ctx) {
+            
+            WeakMap * object = new WeakMap();
+            
+            duk_push_this(ctx);
+            
+            duk_push_string(ctx, "__object");
+            duk_push_pointer(ctx, object);
+            duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
+            
+            duk_push_c_function(ctx, WeakMap_dealloc, 1);
+            duk_set_finalizer(ctx, -2);
+            
+            duk_push_current_function(ctx);
+            duk_get_prototype(ctx, -1);
+            duk_set_prototype(ctx, -3);
+            duk_pop(ctx);
+            
+            duk_pop(ctx);
+            
+            int top = duk_get_top(ctx);
+            
+            if(top > 0 && duk_is_object(ctx, -top)) {
+                
+                duk_enum(ctx, -top, DUK_ENUM_INCLUDE_SYMBOLS);
+                
+                while(duk_next(ctx, -1, 1)) {
+                    
+                    if(duk_is_object(ctx, -1) || duk_is_function(ctx, -1)) {
+                        
+                        object->set(ctx);
+                        
+                    } else {
+                        duk_pop_2(ctx);
+                    }
+                    
+                }
+                
+                duk_pop(ctx);
+                
+            }
+            
+            return 0;
+        }
+        
+        static duk_ret_t WeakMap_get(duk_context * ctx) {
+            
+            WeakMap * v = nullptr;
+            
+            duk_push_this(ctx);
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                v = (WeakMap *) duk_to_pointer(ctx, -1);
+            }
+            
+            duk_pop_2(ctx);
+        
+            if(v && duk_is_object(ctx, -1) ) {
+                return v->get(ctx);
+            }
+            
+            return 0;
+        }
+        
+        static duk_ret_t WeakMap_set(duk_context * ctx) {
+            
+            WeakMap * v = nullptr;
+            
+            duk_push_this(ctx);
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                v = (WeakMap *) duk_to_pointer(ctx, -1);
+            }
+            
+            duk_pop_2(ctx);
+            
+            if(v && duk_is_object(ctx, -1) && duk_is_object(ctx, -2)) {
+                return v->set(ctx);
+            }
+            
+            return 0;
+        }
+        
+        static duk_ret_t WeakMap_has(duk_context * ctx) {
+            
+            WeakMap * v = nullptr;
+            
+            duk_push_this(ctx);
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                v = (WeakMap *) duk_to_pointer(ctx, -1);
+            }
+            
+            duk_pop_2(ctx);
+            
+            if(v && duk_is_object(ctx, -1) ) {
+                return v->has(ctx);
+            }
+            
+            return 0;
+        }
+        
+        static duk_ret_t WeakMap_delete(duk_context * ctx) {
+            
+            WeakMap * v = nullptr;
+            
+            duk_push_this(ctx);
+            
+            duk_get_prop_string(ctx, -1, "__object");
+            
+            if(duk_is_pointer(ctx, -1)) {
+                v = (WeakMap *) duk_to_pointer(ctx, -1);
+            }
+            
+            duk_pop_2(ctx);
+            
+            if(v && duk_is_object(ctx, -1)) {
+                return v->remove(ctx);
+            }
+            
+            return 0;
+        }
+        
+        void OpenlibWeakMap(duk_context * ctx) {
+            
+            duk_push_c_function(ctx, WeakMap_alloc, 1);
+            
+            duk_push_object(ctx);
+            
+            duk_push_c_function(ctx, WeakMap_get, 1);
+            duk_put_prop_string(ctx,-2,"get");
+            
+            duk_push_c_function(ctx, WeakMap_set, 2);
+            duk_put_prop_string(ctx,-2,"set");
+            
+            duk_push_c_function(ctx, WeakMap_has, 1);
+            duk_put_prop_string(ctx,-2,"has");
+            
+            duk_push_c_function(ctx, WeakMap_delete, 1);
+            duk_put_prop_string(ctx,-2,"delete");
+            
+            duk_set_prototype(ctx, -2);
+            
+            duk_put_global_string(ctx, "WeakMap");
+            
+        }
         
     }
 }

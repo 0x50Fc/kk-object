@@ -22,6 +22,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		1A0111C1216090C4002E4182 /* kk-script-debugger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A0111C0216090C4002E4182 /* kk-script-debugger.cc */; };
 		1A7CBC5A211ADCD2006DC0A3 /* kk-atomic-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580921196FA90055256A /* kk-atomic-pthread.cc */; };
 		1A7CBC5B211ADCD2006DC0A3 /* kk-crypto.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580A21196FA90055256A /* kk-crypto.cc */; };
 		1A7CBC5C211ADCD2006DC0A3 /* kk-chan.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580B21196FA90055256A /* kk-chan.cc */; };
@@ -131,6 +132,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1A0111C0216090C4002E4182 /* kk-script-debugger.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-script-debugger.cc"; sourceTree = "<group>"; };
 		1A7CBC4D211ADC8D006DC0A3 /* libKKObject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKKObject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157EE21196F7B0055256A /* KKObject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KKObject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157F121196F7B0055256A /* KKObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKObject.h; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				1A91580C21196FA90055256A /* kk-event.cc */,
 				1A91580D21196FA90055256A /* kk-string.cc */,
 				1A91580E21196FA90055256A /* kk-script.cc */,
+				1A0111C0216090C4002E4182 /* kk-script-debugger.cc */,
 				1A91580F21196FA90055256A /* kk-ev.cc */,
 				1A91581021196FA90055256A /* kk-wk.cc */,
 				1A91581121196FA90055256A /* kk-ws.cc */,
@@ -495,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A91582E21196FA90055256A /* kk-binary.cc in Sources */,
+				1A0111C1216090C4002E4182 /* kk-script-debugger.cc in Sources */,
 				1A91583121196FA90055256A /* kk-dispatch.cc in Sources */,
 				1A91582821196FA90055256A /* kk-event.cc in Sources */,
 				1A91582C21196FA90055256A /* kk-wk.cc in Sources */,

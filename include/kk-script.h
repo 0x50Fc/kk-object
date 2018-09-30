@@ -37,6 +37,16 @@ namespace kk {
             duk_c_function alloc;
         };
         
+        class Debugger : public kk::Object {
+        public:
+            Debugger(int port);
+            virtual ~Debugger();
+            virtual int port();
+            virtual void debug(duk_context * ctx);
+        protected:
+            int _sock;
+        };
+        
         class Context : public kk::Object {
         public:
             Context();
@@ -119,6 +129,8 @@ namespace kk {
         
         void SetMethod(duk_context * ctx, duk_idx_t idx, Method * methods, kk::Uint count);
         
+        void compile(duk_context * ctx, kk::CString code , kk::CString filename);
+        
         duk_int_t decodeJSON(duk_context * ctx, kk::CString text, size_t n);
         
         kk::String toString(duk_context * ctx, duk_idx_t idx);
@@ -142,6 +154,21 @@ namespace kk {
         kk::Boolean toBooleanArgument(duk_context * ctx, duk_idx_t i,kk::Boolean defaultValue);
         
         kk::Object * toObjectArgument(duk_context * ctx, duk_idx_t i);
+        
+        void OpenlibWeakMap(duk_context * ctx);
+        
+        class IWeakObject {
+        public:
+            virtual void recycle(duk_context * ctx, void * heapptr) = 0;
+        };
+        
+        void duk_weak(duk_context * ctx, duk_idx_t idx,void ** heapptr);
+        
+        void duk_unweak(duk_context * ctx, void ** heapptr);
+        
+        void duk_weakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object);
+        
+        void duk_unweakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object);
         
 #define DEF_SCRIPT_CLASS \
     public: \
