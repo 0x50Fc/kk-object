@@ -15,7 +15,6 @@
 namespace kk {
     
    
-    
     struct evdns_base * ev_dns(duk_context * ctx) {
         
         struct evdns_base * base = nullptr;
@@ -46,25 +45,66 @@ namespace kk {
         return base;
     }
     
-    struct Timer {
-        duk_context * ctx;
-        struct event * event;
-        struct timeval tv;
-    };
+    static void ev_Timeout_cb(evutil_socket_t fd, short ev, void * data);
     
-    static void ev_Timeout_cb(evutil_socket_t fd, short ev, void * data) {
+    struct timeval NewTimeval(Uint tv) {
+        struct timeval v;
+        v.tv_sec = tv / 1000;
+        v.tv_usec = (tv % 1000) * 1000LL;
+        return v;
+    }
+    
+    class EventTimer {
+    public:
         
-        Timer * v = (Timer *) data;
-        duk_context * ctx = v->ctx;
-        
-        duk_push_global_object(ctx);
-        duk_push_sprintf(ctx, "__0x%x",(long) v);
-        duk_get_prop(ctx, -2);
-        
-        if(duk_is_object(ctx, -1)) {
+        EventTimer(duk_context * ctx,
+                   void * heapptr,
+                   struct event_base * base,
+                   Uint tv,
+                   Uint rv)
+            :_ctx(ctx),_rv(rv),
+        _isCalling(false),_isRecycled(false),_heapptr(heapptr) {
             
-            duk_push_string(ctx, "fn");
-            duk_get_prop(ctx, -2);
+            _event = evtimer_new(base, ev_Timeout_cb, this);
+            struct timeval v = NewTimeval(tv);
+            evtimer_add(_event, &v);
+        }
+        
+        virtual ~EventTimer() {
+            
+            evtimer_del(_event);
+            event_free(_event);
+            
+        }
+        
+        virtual void recycle() {
+            
+            if(_isRecycled) {
+                return;
+            }
+            
+            _isRecycled = true;
+            
+            if(!_isCalling) {
+                delete this;
+            }
+        }
+        
+        virtual void call() {
+            
+            if(_isRecycled) {
+                return;
+            }
+            
+            if(_isCalling) {
+                return;
+            }
+            
+            duk_context * ctx = _ctx;
+            
+            _isCalling = true;
+            
+            duk_push_heapptr(ctx, _heapptr);
             
             if(duk_is_function(ctx, -1)) {
                 
@@ -76,32 +116,43 @@ namespace kk {
             
             duk_pop(ctx);
             
-        }
-        
-        duk_pop(ctx);
-        
-        duk_push_sprintf(ctx, "__0x%x",(long) v);
-        duk_get_prop(ctx, -2);
-        
-        if(duk_is_object(ctx, -1)) {
-            
-            duk_pop(ctx);
-            
-            if(v->tv.tv_sec || v->tv.tv_usec) {
-                evtimer_add(v->event, &v->tv);
-            } else {
-                
-                duk_push_sprintf(ctx, "__0x%x",(long) v);
-                duk_del_prop(ctx, -2);
-                
+            if(_isRecycled) {
+                delete this;
+                return;
             }
             
-        } else {
+            if(_rv != 0) {
+                struct timeval tv = NewTimeval(_rv);
+                evtimer_add(_event, &tv);
+                return;
+            }
+            
+            duk_push_global_object(ctx);
+            duk_push_sprintf(ctx, "__0x%x",(long) this);
+            duk_del_prop(ctx, -2);
             duk_pop(ctx);
+            
+            _isCalling = false;
+            
+            if(_isRecycled) {
+                delete this;
+                return;
+            }
+            
         }
         
-        duk_pop(ctx);
-        
+    protected:
+        Boolean _isCalling;
+        Boolean _isRecycled;
+        duk_context * _ctx;
+        struct event * _event;
+        Uint _rv;
+        void * _heapptr;
+    };
+    
+    static void ev_Timeout_cb(evutil_socket_t fd, short ev, void * data) {
+        EventTimer * v = (EventTimer *) data;
+        v->call();
     }
     
     static duk_ret_t ev_Timer_dealloc(duk_context *ctx) {
@@ -109,64 +160,47 @@ namespace kk {
         duk_get_prop_string(ctx, -1, "__object");
         
         if(duk_is_pointer(ctx, -1)) {
-            
-            Timer * v =(Timer *) duk_to_pointer(ctx, -1);
-            
-            evtimer_del(v->event);
-            event_free(v->event);
-            
-            delete v;
-            
+            EventTimer * v = (EventTimer *) duk_to_pointer(ctx, -1);
+            v->recycle();
         }
+        
+        duk_pop(ctx);
         
         return 0;
     }
     
-    static duk_ret_t ev_newTimer(duk_context * ctx, void * fn, int tv, int rv) {
+    static duk_ret_t ev_newTimer(duk_context * ctx, void * fn, Uint tv, Uint rv) {
         
         event_base * base = ev_base(ctx);
         
-        Timer * v = new Timer();
-        
-        memset(v,0,sizeof(Timer));
-        
-        v->ctx = ctx;
-        v->event = evtimer_new(base, ev_Timeout_cb, v);
-        v->tv.tv_sec = rv / 1000;
-        v->tv.tv_usec = (rv % 1000) * 1000LL;
+        EventTimer * v = new EventTimer(ctx,fn,base,tv,rv);
         
         duk_push_global_object(ctx);
         
         duk_push_sprintf(ctx, "__0x%x",(long) v);
         duk_push_object(ctx);
-        
-        duk_push_string(ctx, "__object");
-        duk_push_pointer(ctx, v);
-        duk_put_prop(ctx, -3);
-        
-        duk_push_string(ctx, "fn");
-        duk_push_heapptr(ctx, fn);
-        duk_put_prop(ctx, -3);
-        
-        duk_push_c_function(ctx, ev_Timer_dealloc, 1);
-        duk_set_finalizer(ctx, -2);
-        
+        {
+            duk_push_string(ctx, "__object");
+            duk_push_pointer(ctx, v);
+            duk_put_prop(ctx, -3);
+            
+            duk_push_string(ctx, "fn");
+            duk_push_heapptr(ctx, fn);
+            duk_put_prop(ctx, -3);
+            
+            duk_push_c_function(ctx, ev_Timer_dealloc, 1);
+            duk_set_finalizer(ctx, -2);
+        }
         duk_put_prop(ctx, -3);
         
         duk_pop(ctx);
-
-        struct timeval tvv = {tv / 1000, 0};
-        
-        tvv.tv_usec = (tv % 1000) * 1000LL;
-
-        evtimer_add(v->event, &tvv);
         
         duk_push_sprintf(ctx, "__0x%x",(long) v);
         
         return 1;
         
     }
-    
+
     static duk_ret_t ev_setTimeout(duk_context * ctx) {
         
         int top = duk_get_top(ctx);
@@ -175,16 +209,15 @@ namespace kk {
             
             void * fn = duk_get_heapptr(ctx, -top);
             
-            int tv = 0;
+            Uint tv = 0;
             
             if(top > 1) {
                 if(duk_is_number(ctx, -top +1)) {
-                    tv = duk_to_int(ctx, -top + 1);
+                    tv = duk_to_uint(ctx, -top + 1);
                 } else if(duk_is_string(ctx, -top + 1)) {
-                    tv = atoi(duk_to_string(ctx, -top  +1));
+                    tv = (Uint) atol(duk_to_string(ctx, -top  +1));
                 }
             }
-            
             
             return ev_newTimer(ctx,fn,tv,0);
         }
@@ -200,13 +233,13 @@ namespace kk {
             
             void * fn = duk_get_heapptr(ctx, -top);
             
-            int tv = 0;
+            Uint tv = 0;
             
             if(top > 1) {
                 if(duk_is_number(ctx, -top +1)) {
-                    tv = duk_to_int(ctx, -top + 1);
+                    tv = duk_to_uint(ctx, -top + 1);
                 } else if(duk_is_string(ctx, -top + 1)) {
-                    tv = atoi(duk_to_string(ctx, -top  +1));
+                    tv = (Uint) atoll(duk_to_string(ctx, -top  +1));
                 }
             }
             

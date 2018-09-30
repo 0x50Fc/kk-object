@@ -135,6 +135,8 @@ namespace kk {
         
         kk::String toString(duk_context * ctx, duk_idx_t idx);
         
+        kk::CString toCString(duk_context * ctx, duk_idx_t idx);
+        
         kk::Double toDouble(duk_context * ctx, duk_idx_t idx);
         
         kk::Int toInt(duk_context * ctx, duk_idx_t idx);
@@ -142,6 +144,8 @@ namespace kk {
         kk::Uint toUint(duk_context * ctx, duk_idx_t idx);
         
         kk::Boolean toBoolean(duk_context * ctx, duk_idx_t idx);
+        
+        void * toBufferData(duk_context * ctx, duk_idx_t idx, duk_size_t * size);
         
         kk::Int toIntArgument(duk_context * ctx, duk_idx_t i,kk::Int defaultValue);
         
@@ -151,9 +155,13 @@ namespace kk {
         
         kk::String toStringArgument(duk_context * ctx, duk_idx_t i,kk::CString defaultValue);
         
+        kk::CString toCStringArgument(duk_context * ctx, duk_idx_t i,kk::CString defaultValue);
+        
         kk::Boolean toBooleanArgument(duk_context * ctx, duk_idx_t i,kk::Boolean defaultValue);
         
         kk::Object * toObjectArgument(duk_context * ctx, duk_idx_t i);
+        
+        void * toBufferDataArgument(duk_context * ctx, duk_idx_t i, duk_size_t * size);
         
         void OpenlibWeakMap(duk_context * ctx);
         

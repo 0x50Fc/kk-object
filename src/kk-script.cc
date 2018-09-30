@@ -615,6 +615,13 @@ namespace kk {
             return "";
         }
         
+        kk::CString toCString(duk_context * ctx, duk_idx_t idx) {
+            if(duk_is_string(ctx, idx)) {
+                return duk_to_string(ctx, idx);
+            }
+            return nullptr;
+        }
+        
         kk::Double toDouble(duk_context * ctx, duk_idx_t idx) {
             if(duk_is_string(ctx, idx)) {
                 return atof(duk_to_string(ctx, idx));
@@ -660,6 +667,18 @@ namespace kk {
             return 0;
         }
         
+        void * toBufferData(duk_context * ctx, duk_idx_t idx, duk_size_t * size) {
+            if(duk_is_buffer(ctx, idx)) {
+                return duk_get_buffer(ctx, idx, size);
+            } else if(duk_is_buffer_data(ctx, idx)) {
+                return duk_get_buffer_data(ctx, idx, size);
+            }
+            if(size) {
+                *size = 0;
+            }
+            return nullptr;
+        }
+        
         kk::Int toIntArgument(duk_context * ctx, duk_idx_t i,kk::Int defaultValue) {
             int top = duk_get_top(ctx);
             if(i < top) {
@@ -692,6 +711,14 @@ namespace kk {
             return defaultValue == nullptr ? "" : defaultValue;
         }
         
+        kk::CString toCStringArgument(duk_context * ctx, duk_idx_t i,kk::CString defaultValue) {
+            int top = duk_get_top(ctx);
+            if(i < top) {
+                return toCString(ctx, -top + i);
+            }
+            return defaultValue;
+        }
+        
         kk::Boolean toBooleanArgument(duk_context * ctx, duk_idx_t i,kk::Boolean defaultValue) {
             int top = duk_get_top(ctx);
             if(i < top) {
@@ -704,6 +731,16 @@ namespace kk {
             int top = duk_get_top(ctx);
             if(i < top && duk_is_object(ctx, -top + i)) {
                 return GetObject(ctx, -top + i);
+            }
+            return nullptr;
+        }
+        
+        void * toBufferDataArgument(duk_context * ctx, duk_idx_t i, duk_size_t * size) {
+            int top = duk_get_top(ctx);
+            if(i < top && duk_is_object(ctx, -top + i)) {
+                return toBufferData(ctx, -top + i, size);
+            } else if(size) {
+                * size = 0;
             }
             return nullptr;
         }
