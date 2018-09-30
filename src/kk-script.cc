@@ -594,12 +594,12 @@ namespace kk {
         
         static duk_ret_t compile_func (duk_context *ctx, void *udata) {
             duk_compile_string_filename(ctx, 0, (kk::CString) udata);
-            return 0;
+            return 1;
         }
         
         void compile(duk_context * ctx, kk::CString code , kk::CString filename) {
             duk_push_string(ctx, filename);
-            duk_safe_call(ctx, compile_func, (void *) code, 1, 0);
+            duk_safe_call(ctx, compile_func, (void *) code, 1, 1);
         }
         
         kk::String toString(duk_context * ctx, duk_idx_t idx) {
