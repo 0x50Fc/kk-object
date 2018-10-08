@@ -14,7 +14,7 @@
 namespace kk {
     
     enum HttpBodyType {
-        HttpBodyTypeString,HttpBodyTypeBytes,HttpBodyTypeJSON
+        HttpBodyTypeString,HttpBodyTypeBytes,HttpBodyTypeJSON,HttpBodyTypeArrayBuffer
     };
     
     class HttpTask : public kk::Object ,public kk::script::IObject {
@@ -225,7 +225,11 @@ namespace kk {
                             memcpy(d, data, n);
                             duk_push_buffer_object(ctx, -1, 0, n, DUK_BUFOBJ_UINT8ARRAY);
                             duk_remove(ctx, -2);
-                            
+                        } else if(_bodyType == HttpBodyTypeArrayBuffer) {
+                            void * d = duk_push_fixed_buffer(ctx, n);
+                            memcpy(d, data, n);
+                            duk_push_buffer_object(ctx, -1, 0, n, DUK_BUFOBJ_ARRAYBUFFER);
+                            duk_remove(ctx, -2);
                         } else {
                             duk_push_lstring(ctx, (const char *) data, n);
                         }
@@ -346,6 +350,8 @@ namespace kk {
                         bodyType = HttpBodyTypeJSON;
                     } else if(kk::CStringEqual(v, "bytes")) {
                         bodyType = HttpBodyTypeBytes;
+                    } else if(kk::CStringEqual(v, "arraybuffer")) {
+                        bodyType = HttpBodyTypeArrayBuffer;
                     }
                 }
                 

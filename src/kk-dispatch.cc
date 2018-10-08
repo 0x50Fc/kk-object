@@ -93,10 +93,6 @@ namespace kk {
         
         DispatchQueue * queue = (DispatchQueue *) data;
         
-        if(gDispatchQueueKey == 0) {
-            pthread_key_create(&gDispatchQueueKey, nullptr);
-        }
-        
         pthread_setspecific(gDispatchQueueKey, queue);
         
 #ifndef KK_PLATFORM_LINUX
@@ -122,11 +118,7 @@ namespace kk {
         return nullptr;
     }
     
-    
-    
     void DispatchQueue::run() {
-        
-        
         
         do {
             
@@ -142,8 +134,7 @@ namespace kk {
             
             _chan->releaseObject((ChanObject) object);
             
-        } while (1);
-        
+        } while (! _loopbreak);
         
         if(!_loopbreak) {
             evtimer_add(_event, &tv);
@@ -156,6 +147,11 @@ namespace kk {
     }
         
     DispatchQueue::DispatchQueue(kk::CString name):_name(name) {
+        
+        if(gDispatchQueueKey == 0) {
+            pthread_key_create(&gDispatchQueueKey, nullptr);
+        }
+        
         _attach = false;
         _joined = false;
         _loopbreak = false;
@@ -174,7 +170,16 @@ namespace kk {
         return nullptr;
     }
     
+    void DispatchQueue::setCurrent(DispatchQueue * queue) {
+        pthread_setspecific(gDispatchQueueKey, queue);
+    }
+    
     DispatchQueue::DispatchQueue(kk::CString name,event_base * base):_name(name) {
+        
+        if(gDispatchQueueKey == 0) {
+            pthread_key_create(&gDispatchQueueKey, nullptr);
+        }
+        
         _attach = true;
         _joined = false;
         _loopbreak = false;

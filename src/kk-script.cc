@@ -60,7 +60,7 @@ namespace kk {
             
             return 0;
         }
-        
+    
         Context::Context() {
             
             _jsContext = duk_create_heap(nullptr, nullptr, nullptr, nullptr, Context_fatal_function);
@@ -748,11 +748,13 @@ namespace kk {
         class WeakObject {
         public:
             
+            WeakObject(void *heapptr):_heapptr(heapptr) {}
+            
             virtual ~WeakObject() {
                 
             }
             
-            virtual void recycle(duk_context * ctx,void * heapptr) {
+            virtual void recycle(duk_context * ctx) {
                 
                 {
                     std::set<void **>::iterator i = _weaks.begin();
@@ -767,7 +769,7 @@ namespace kk {
                     std::set<IWeakObject *>::iterator i = _objects.begin();
                     while(i != _objects.end()) {
                         IWeakObject * v = * i;
-                        v->recycle(ctx, heapptr);
+                        v->recycle(ctx, _heapptr);
                         i ++;
                     }
                 }
@@ -798,6 +800,7 @@ namespace kk {
         protected:
             std::set<void **> _weaks;
             std::set<IWeakObject *> _objects;
+            void * _heapptr;
         };
         
         static duk_ret_t WeakObject_dealloc(duk_context * ctx) {
@@ -813,14 +816,14 @@ namespace kk {
             duk_pop(ctx);
             
             if(v) {
-                v->recycle(ctx,duk_get_heapptr(ctx, -1));
+                v->recycle(ctx);
                 delete v;
             }
             
             return 0;
         }
         
-        static WeakObject * duk_getWeakObject(duk_context * ctx, duk_idx_t idx) {
+        static WeakObject * duk_getWeakObject(duk_context * ctx, duk_idx_t idx, kk::Boolean isCreated) {
             
             if(duk_is_object(ctx, idx) || duk_is_function(ctx, idx)) {
                 
@@ -842,9 +845,9 @@ namespace kk {
                     duk_pop(ctx);
                 }
                 
-                if(v == nullptr) {
+                if(v == nullptr && isCreated) {
                     
-                    v = new WeakObject();
+                    v = new WeakObject(duk_get_heapptr(ctx, idx));
                     
                     duk_push_string(ctx, "__weakObject");
                     
@@ -857,7 +860,7 @@ namespace kk {
                         duk_push_c_function(ctx, WeakObject_dealloc, 1);
                         duk_set_finalizer(ctx, -2);
                     }
-                    duk_def_prop(ctx, idx - 1, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
+                    duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
                 }
                 
                 return v;
@@ -869,7 +872,7 @@ namespace kk {
         
         void duk_weak(duk_context * ctx, duk_idx_t idx,void ** heapptr) {
             
-            WeakObject * v = duk_getWeakObject(ctx, idx);
+            WeakObject * v = duk_getWeakObject(ctx, idx,true);
             
             if(v != nullptr) {
                 * heapptr = duk_get_heapptr(ctx, idx);
@@ -884,7 +887,7 @@ namespace kk {
                 
                 duk_push_heapptr(ctx, *heapptr);
                 
-                WeakObject * v = duk_getWeakObject(ctx, -1);
+                WeakObject * v = duk_getWeakObject(ctx, -1,false);
                 
                 if(v != nullptr) {
                     v->unweak(heapptr);
@@ -899,7 +902,7 @@ namespace kk {
         
         void duk_weakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object) {
             
-            WeakObject * v = duk_getWeakObject(ctx, idx);
+            WeakObject * v = duk_getWeakObject(ctx, idx,true);
             
             if(v != nullptr) {
                 v->weakObject(object);
@@ -909,7 +912,7 @@ namespace kk {
         
         void duk_unweakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object) {
             
-            WeakObject * v = duk_getWeakObject(ctx, idx);
+            WeakObject * v = duk_getWeakObject(ctx, idx,false);
             
             if(v != nullptr) {
                 v->unweakObject(object);
@@ -920,7 +923,7 @@ namespace kk {
         class WeakMap : public IWeakObject {
         public:
             
-            WeakMap() {
+            WeakMap(void * heapptr):_heapptr(heapptr) {
                 
             }
             
@@ -939,6 +942,10 @@ namespace kk {
                 std::set<void *>::iterator i = _keys.find(heapptr);
                 if(i != _keys.end()) {
                     _keys.erase(i);
+                    duk_push_heapptr(ctx, _heapptr);
+                    duk_push_sprintf(ctx, "__0x%x",(unsigned long) heapptr);
+                    duk_del_prop(ctx, -2);
+                    duk_pop(ctx);
                 }
             }
             
@@ -955,9 +962,9 @@ namespace kk {
                 
                 duk_push_this(ctx);
                 
-                duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                duk_push_sprintf(ctx, "__0x%x",(unsigned long) key);
                 duk_dup(ctx, -3);
-                duk_put_prop(ctx, -3);
+                duk_def_prop(ctx, -3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
                 
                 duk_pop(ctx);
                 
@@ -983,7 +990,7 @@ namespace kk {
                     
                     duk_push_this(ctx);
                     
-                    duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                    duk_push_sprintf(ctx, "__0x%x",(unsigned long) key);
                     duk_get_prop(ctx, -2);
                     
                     duk_remove(ctx, -2);
@@ -1006,7 +1013,7 @@ namespace kk {
                     
                     duk_push_this(ctx);
                     
-                    duk_push_sprintf(ctx, "__%x",(unsigned long) key);
+                    duk_push_sprintf(ctx, "__0x%x",(unsigned long) key);
                     duk_del_prop(ctx, -2);
                     
                     duk_pop(ctx);
@@ -1021,41 +1028,47 @@ namespace kk {
             
         protected:
             std::set<void *> _keys;
+            void * _heapptr;
         };
         
         
         static duk_ret_t WeakMap_dealloc(duk_context * ctx) {
             
+            WeakMap * v = nullptr;
+            
             duk_get_prop_string(ctx, -1, "__object");
             
             if(duk_is_pointer(ctx, -1)) {
-                WeakMap * v = (WeakMap *) duk_to_pointer(ctx, -1);
-                v->recycle(ctx);
-                delete v;
+                v = (WeakMap *) duk_to_pointer(ctx, -1);
             }
             
             duk_pop(ctx);
+            
+            if(v) {
+                v->recycle(ctx);
+                delete v;
+            }
             
             return 0;
         }
         
         static duk_ret_t WeakMap_alloc(duk_context * ctx) {
             
-            WeakMap * object = new WeakMap();
-            
             duk_push_this(ctx);
+            
+            WeakMap * object = new WeakMap(duk_get_heapptr(ctx, -1));
             
             duk_push_string(ctx, "__object");
             duk_push_pointer(ctx, object);
             duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE);
             
-            duk_push_c_function(ctx, WeakMap_dealloc, 1);
-            duk_set_finalizer(ctx, -2);
-            
             duk_push_current_function(ctx);
             duk_get_prototype(ctx, -1);
             duk_set_prototype(ctx, -3);
             duk_pop(ctx);
+            
+            duk_push_c_function(ctx, WeakMap_dealloc, 1);
+            duk_set_finalizer(ctx, -2);
             
             duk_pop(ctx);
             

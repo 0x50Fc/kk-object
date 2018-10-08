@@ -124,6 +124,7 @@ namespace kk {
             if(_rv != 0) {
                 struct timeval tv = NewTimeval(_rv);
                 evtimer_add(_event, &tv);
+                _isCalling = false;
                 return;
             }
             

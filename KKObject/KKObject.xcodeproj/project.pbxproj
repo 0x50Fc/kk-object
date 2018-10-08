@@ -84,6 +84,7 @@
 		1A91583221196FA90055256A /* kk-block.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91581621196FA90055256A /* kk-block.cc */; };
 		1A91587E21198D390055256A /* kk-bio.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91587B21198C270055256A /* kk-bio.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A91588021198D4B0055256A /* kk-bio.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91587F21198D4B0055256A /* kk-bio.cc */; };
+		ACDEDD92216137CB00EFC9A4 /* KKObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = ACDEDD91216137CB00EFC9A4 /* KKObject.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -169,6 +170,7 @@
 		1A91583A21196FCF0055256A /* KKEvent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KKEvent.xcodeproj; path = "../../kk-event/KKEvent/KKEvent.xcodeproj"; sourceTree = "<group>"; };
 		1A91587B21198C270055256A /* kk-bio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kk-bio.h"; sourceTree = "<group>"; };
 		1A91587F21198D4B0055256A /* kk-bio.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-bio.cc"; sourceTree = "<group>"; };
+		ACDEDD91216137CB00EFC9A4 /* KKObject.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = KKObject.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +216,7 @@
 				1A9157F921196FA90055256A /* include */,
 				1A91580821196FA90055256A /* src */,
 				1A9157F121196F7B0055256A /* KKObject.h */,
+				ACDEDD91216137CB00EFC9A4 /* KKObject.mm */,
 				1A9157F221196F7B0055256A /* Info.plist */,
 			);
 			path = KKObject;
@@ -502,6 +505,7 @@
 				1A91583121196FA90055256A /* kk-dispatch.cc in Sources */,
 				1A91582821196FA90055256A /* kk-event.cc in Sources */,
 				1A91582C21196FA90055256A /* kk-wk.cc in Sources */,
+				ACDEDD92216137CB00EFC9A4 /* KKObject.mm in Sources */,
 				1A91582621196FA90055256A /* kk-crypto.cc in Sources */,
 				1A91582F21196FA90055256A /* kk-object.cc in Sources */,
 				1A91582A21196FA90055256A /* kk-script.cc in Sources */,

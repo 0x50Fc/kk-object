@@ -205,14 +205,9 @@ namespace kk {
     void LogV(const char * format, va_list va) {
         __android_log_vprint(ANDROID_LOG_DEBUG,"kk",format,va);
     }
-
-    void Log(const char * format, ...) {
-        va_list va;
-        va_start(va, format);
-        LogV(format, va);
-        va_end(va);
-    }
-
+    
+#elif defined(KK_PLATFORM_IOS)
+    
 #else
 
     void LogV(const char * format, va_list va) {
@@ -227,12 +222,13 @@ namespace kk {
     
     }
     
+#endif
+    
     void Log(const char * format, ...) {
         va_list va;
         va_start(va, format);
         LogV(format, va);
         va_end(va);
     }
-#endif
     
 }
