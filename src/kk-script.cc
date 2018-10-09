@@ -78,6 +78,7 @@ namespace kk {
             duk_pop(_jsContext);
             
             OpenlibWeakMap(_jsContext);
+            OpenlibMap(_jsContext);
             
         }
         
@@ -1202,6 +1203,238 @@ namespace kk {
             duk_set_prototype(ctx, -2);
             
             duk_put_global_string(ctx, "WeakMap");
+            
+        }
+        
+        static void MapPushKeyString(duk_context * ctx, duk_idx_t idx) {
+            
+            if(duk_is_undefined(ctx, idx)) {
+                duk_push_string(ctx, "@undefined");
+                return;
+            }
+            
+            if(duk_is_null(ctx, idx)) {
+                duk_push_string(ctx, "@null");
+                return;
+            }
+            
+            if(duk_is_nan(ctx, idx)) {
+                duk_push_string(ctx, "@nan");
+                return;
+            }
+            
+            if(duk_is_boolean(ctx, idx)) {
+                if(duk_to_boolean(ctx, idx)) {
+                    duk_push_string(ctx, "@true");
+                    return;
+                } else {
+                    duk_push_string(ctx, "@false");
+                    return;
+                }
+            }
+            
+            if(duk_is_number(ctx, idx)) {
+                duk_push_sprintf(ctx, "@%g",duk_to_number(ctx, idx));
+                return;
+            }
+            
+            if(duk_is_pointer(ctx, idx)) {
+                duk_push_sprintf(ctx, "0x%lx",(unsigned long) duk_to_pointer(ctx, idx));
+                return;
+            }
+            
+            if(duk_is_string(ctx, idx)) {
+                duk_dup(ctx, idx);
+                return;
+            }
+            
+            duk_push_sprintf(ctx, "0x%lx",(unsigned long) duk_get_heapptr(ctx, idx));
+
+        }
+        
+        static duk_ret_t Map_set(duk_context * ctx);
+        
+        static duk_ret_t Map_alloc(duk_context * ctx) {
+            
+            duk_push_this(ctx);
+            
+            duk_push_current_function(ctx);
+            duk_get_prototype(ctx, -1);
+            duk_set_prototype(ctx, -3);
+            duk_pop(ctx);
+  
+            duk_pop(ctx);
+            
+            int top = duk_get_top(ctx);
+            
+            if(top > 0 && duk_is_object(ctx, -top)) {
+                
+                duk_enum(ctx, -top, DUK_ENUM_INCLUDE_SYMBOLS);
+                
+                while(duk_next(ctx, -1, 1)) {
+                    
+                    Map_set(ctx);
+                    
+                }
+                
+                duk_pop(ctx);
+                
+            }
+            
+            return 0;
+            
+        }
+            
+        static duk_ret_t Map_get(duk_context * ctx) {
+            
+            duk_push_this(ctx);
+            
+            MapPushKeyString(ctx, -2);
+            duk_get_prop(ctx, -2);
+            
+            if(duk_is_object(ctx, -1)) {
+                duk_get_prop_string(ctx, -1, "value");
+                duk_remove(ctx, -2);
+                duk_remove(ctx, -2);
+                return 1;
+            }
+            
+            duk_pop_2(ctx);
+            
+            return 0;
+        }
+        
+        static duk_ret_t Map_set(duk_context * ctx) {
+            
+            duk_push_this(ctx);
+            
+            MapPushKeyString(ctx, -3);
+            duk_push_object(ctx);
+            {
+                duk_push_string(ctx, "type");
+                duk_push_pointer(ctx, (void *) Map_alloc);
+                duk_put_prop(ctx, -3);
+                duk_push_string(ctx, "key");
+                duk_dup(ctx, -6);
+                duk_put_prop(ctx, -3);
+                duk_push_string(ctx, "value");
+                duk_dup(ctx, -5);
+                duk_put_prop(ctx, -3);
+            }
+            duk_def_prop(ctx, -3,DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+            
+            duk_pop(ctx);
+            
+            return 0;
+        }
+        
+        static duk_ret_t Map_has(duk_context * ctx) {
+            
+            duk_bool_t v = 0;
+            
+            duk_push_this(ctx);
+            
+            MapPushKeyString(ctx, -2);
+            duk_get_prop(ctx, -2);
+            
+            if(duk_is_object(ctx, -1)) {
+                v = true;
+            }
+            
+            duk_pop_2(ctx);
+            
+            duk_push_boolean(ctx, v);
+            
+            return 1;
+            
+        }
+        
+        static duk_ret_t Map_delete(duk_context * ctx) {
+            
+            duk_push_this(ctx);
+            
+            MapPushKeyString(ctx, -2);
+            duk_del_prop(ctx, -2);
+            
+            duk_pop(ctx);
+        
+            return 0;
+        }
+        
+        static duk_ret_t Map_forEach(duk_context * ctx) {
+            
+            duk_push_this(ctx);
+            
+            duk_enum(ctx, -1, DUK_ENUM_INCLUDE_NONENUMERABLE);
+            
+            while(duk_next(ctx, -1, 1)) {
+                
+                if(! duk_is_object(ctx, -1)) {
+                    duk_pop_2(ctx);
+                    continue;
+                }
+                
+                duk_get_prop_string(ctx, -1, "type");
+                
+                if(duk_is_pointer(ctx, -1) && duk_to_pointer(ctx, -1) == Map_alloc) {
+                    duk_pop(ctx);
+                } else {
+                    duk_pop_3(ctx);
+                    continue;
+                }
+                
+                duk_dup(ctx, -5);
+                
+                if(duk_is_function(ctx, -1)) {
+                    
+                    
+                    
+                    
+                    duk_get_prop_string(ctx, -2, "value");
+                    duk_get_prop_string(ctx, -3, "key");
+                    
+                    if(duk_pcall(ctx, 2) != DUK_EXEC_SUCCESS) {
+                        Error(ctx, -1);
+                    }
+                    
+                    duk_pop_3(ctx);
+                    
+                } else {
+                    duk_pop_3(ctx);
+                }
+                
+            }
+            
+            duk_pop_2(ctx);
+            
+            return 0;
+        }
+        
+        
+        void OpenlibMap(duk_context * ctx) {
+            
+            duk_push_c_function(ctx, Map_alloc, 1);
+            
+            duk_push_object(ctx);
+            
+            duk_push_c_function(ctx, Map_get, 1);
+            duk_put_prop_string(ctx,-2,"get");
+            
+            duk_push_c_function(ctx, Map_set, 2);
+            duk_put_prop_string(ctx,-2,"set");
+            
+            duk_push_c_function(ctx, Map_has, 1);
+            duk_put_prop_string(ctx,-2,"has");
+            
+            duk_push_c_function(ctx, Map_delete, 1);
+            duk_put_prop_string(ctx,-2,"delete");
+            
+            duk_push_c_function(ctx, Map_forEach, 1);
+            duk_put_prop_string(ctx,-2,"forEach");
+            
+            duk_set_prototype(ctx, -2);
+            
+            duk_put_global_string(ctx, "Map");
             
         }
         

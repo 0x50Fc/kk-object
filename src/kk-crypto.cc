@@ -9,6 +9,8 @@
 #include "kk-config.h"
 #include "kk-crypto.h"
 
+#include <zlib.h>
+
 #if defined(__APPLE__)
 
 #include <CommonCrypto/CommonCrypto.h>
@@ -115,6 +117,194 @@ namespace kk {
         return 0;
     }
     
+    static duk_ret_t Crypto_zlib_deflate_func(duk_context * ctx) {
+        
+        size_t n = 0;
+        void * data = kk::script::toBufferDataArgument(ctx, 0, &n);
+        
+        if(!data) {
+            return 0;
+        }
+        
+        size_t outlen = n * 1.5;
+        void * out = duk_push_dynamic_buffer(ctx, outlen);
+        
+        int status = Z_OK;
+        z_stream strm;
+        
+        strm.next_in = (Bytef *) data;
+        strm.avail_in = (uInt) n;
+        strm.avail_out = 0;
+        strm.total_out = 0;
+        strm.zalloc = Z_NULL;
+        strm.zfree = Z_NULL;
+    
+        if(deflateInit(&strm,Z_DEFAULT_COMPRESSION) == Z_OK){
+            
+            while(status == Z_OK){
+                
+                if(outlen - strm.total_out <= 0) {
+                    outlen += MAX(2048, n);
+                    out = duk_resize_buffer(ctx, -1, outlen);
+                }
+                
+                strm.next_out = (Bytef *) out + strm.total_out;
+                strm.avail_out = (uInt) (outlen - strm.total_out);
+                
+                status = deflate(&strm,Z_SYNC_FLUSH);
+            }
+            
+            deflateEnd(&strm);
+        }
+        
+        duk_push_buffer_object(ctx, -1, 0, strm.total_out, DUK_BUFOBJ_ARRAYBUFFER);
+        
+        duk_remove(ctx, -2);
+        
+        return 1;
+    }
+    
+    static duk_ret_t Crypto_zlib_inflate_func(duk_context * ctx) {
+        
+        size_t n = 0;
+        void * data = kk::script::toBufferDataArgument(ctx, 0, &n);
+        
+        if(!data) {
+            return 0;
+        }
+        
+        size_t outlen = n * 1.5;
+        void * out = duk_push_dynamic_buffer(ctx, outlen);
+        
+        int status = Z_OK;
+        z_stream strm;
+        
+        strm.next_in = (Bytef *) data;
+        strm.avail_in = (uInt) n;
+        strm.avail_out = 0;
+        strm.total_out = 0;
+        strm.zalloc = Z_NULL;
+        strm.zfree = Z_NULL;
+        
+        if(inflateInit(&strm) == Z_OK){
+            
+            while(status == Z_OK){
+                
+                if(outlen - strm.total_out <= 0) {
+                    outlen += MAX(2048, n);
+                    out = duk_resize_buffer(ctx, -1, outlen);
+                }
+                
+                strm.next_out = (Bytef *) out + strm.total_out;
+                strm.avail_out = (uInt) (outlen - strm.total_out);
+                
+                status = inflate(&strm,Z_SYNC_FLUSH);
+            }
+            
+            inflateEnd(&strm);
+        }
+        
+        duk_push_buffer_object(ctx, -1, 0, strm.total_out, DUK_BUFOBJ_ARRAYBUFFER);
+        
+        duk_remove(ctx, -2);
+        
+        return 1;
+    }
+    
+    static duk_ret_t Crypto_zlib_gzip_func(duk_context * ctx) {
+        
+        size_t n = 0;
+        void * data = kk::script::toBufferDataArgument(ctx, 0, &n);
+        
+        if(!data) {
+            return 0;
+        }
+        
+        size_t outlen = n * 1.5;
+        void * out = duk_push_dynamic_buffer(ctx, outlen);
+        
+        int status = Z_OK;
+        z_stream strm;
+        
+        strm.next_in = (Bytef *) data;
+        strm.avail_in = (uInt) n;
+        strm.avail_out = 0;
+        strm.total_out = 0;
+        strm.zalloc = Z_NULL;
+        strm.zfree = Z_NULL;
+        
+        if(deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15+32, 8, Z_DEFAULT_STRATEGY)){
+            
+            while(status == Z_OK){
+                
+                if(outlen - strm.total_out <= 0) {
+                    outlen += MAX(2048, n);
+                    out = duk_resize_buffer(ctx, -1, outlen);
+                }
+                
+                strm.next_out = (Bytef *) out + strm.total_out;
+                strm.avail_out = (uInt) (outlen - strm.total_out);
+                
+                status = deflate(&strm,Z_SYNC_FLUSH);
+            }
+            
+            deflateEnd(&strm);
+        }
+        
+        duk_push_buffer_object(ctx, -1, 0, strm.total_out, DUK_BUFOBJ_ARRAYBUFFER);
+        
+        duk_remove(ctx, -2);
+        
+        return 1;
+    }
+    
+    static duk_ret_t Crypto_zlib_gunzip_func(duk_context * ctx) {
+        
+        size_t n = 0;
+        void * data = kk::script::toBufferDataArgument(ctx, 0, &n);
+        
+        if(!data) {
+            return 0;
+        }
+        
+        size_t outlen = n * 1.5;
+        void * out = duk_push_dynamic_buffer(ctx, outlen);
+        
+        int status = Z_OK;
+        z_stream strm;
+        
+        strm.next_in = (Bytef *) data;
+        strm.avail_in = (uInt) n;
+        strm.avail_out = 0;
+        strm.total_out = 0;
+        strm.zalloc = Z_NULL;
+        strm.zfree = Z_NULL;
+        
+        if(inflateInit2(&strm,(15+32))){
+            
+            while(status == Z_OK){
+                
+                if(outlen - strm.total_out <= 0) {
+                    outlen += MAX(2048, n);
+                    out = duk_resize_buffer(ctx, -1, outlen);
+                }
+                
+                strm.next_out = (Bytef *) out + strm.total_out;
+                strm.avail_out = (uInt) (outlen - strm.total_out);
+                
+                status = inflate(&strm,Z_SYNC_FLUSH);
+            }
+            
+            inflateEnd(&strm);
+        }
+        
+        duk_push_buffer_object(ctx, -1, 0, strm.total_out, DUK_BUFOBJ_ARRAYBUFFER);
+        
+        duk_remove(ctx, -2);
+        
+        return 1;
+    }
+    
     void Crypto_openlibs(duk_context * ctx) {
         
         duk_push_global_object(ctx);
@@ -123,6 +313,18 @@ namespace kk {
         
         duk_push_c_function(ctx, Crypto_MD5_func, 1);
         duk_put_prop_string(ctx, -2, "md5");
+        
+        duk_push_c_function(ctx, Crypto_zlib_deflate_func, 1);
+        duk_put_prop_string(ctx, -2, "deflate");
+        
+        duk_push_c_function(ctx, Crypto_zlib_inflate_func, 1);
+        duk_put_prop_string(ctx, -2, "inflate");
+        
+        duk_push_c_function(ctx, Crypto_zlib_gzip_func, 1);
+        duk_put_prop_string(ctx, -2, "gzip");
+        
+        duk_push_c_function(ctx, Crypto_zlib_gunzip_func, 1);
+        duk_put_prop_string(ctx, -2, "gunzip");
         
         duk_put_prop_string(ctx, -2, "crypto");
         

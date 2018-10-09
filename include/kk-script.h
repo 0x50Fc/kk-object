@@ -178,6 +178,8 @@ namespace kk {
         
         void duk_unweakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object);
         
+        void OpenlibMap(duk_context * ctx);
+        
 #define DEF_SCRIPT_CLASS \
     public: \
         static kk::script::Class ScriptClass; \
