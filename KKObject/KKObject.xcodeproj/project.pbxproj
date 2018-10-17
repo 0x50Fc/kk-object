@@ -23,7 +23,8 @@
 
 /* Begin PBXBuildFile section */
 		1A0111C1216090C4002E4182 /* kk-script-debugger.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A0111C0216090C4002E4182 /* kk-script-debugger.cc */; };
-		1A7CBC5A211ADCD2006DC0A3 /* kk-atomic-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580921196FA90055256A /* kk-atomic-pthread.cc */; };
+		1A6C9083216F00F100FDB4D1 /* kk-lock-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A6C9082216F00F100FDB4D1 /* kk-lock-pthread.cc */; };
+		1A6C9084216F03C900FDB4D1 /* kk-lock.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A6C907E216F007A00FDB4D1 /* kk-lock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A7CBC5B211ADCD2006DC0A3 /* kk-crypto.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580A21196FA90055256A /* kk-crypto.cc */; };
 		1A7CBC5C211ADCD2006DC0A3 /* kk-chan.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580B21196FA90055256A /* kk-chan.cc */; };
 		1A7CBC5D211ADCD2006DC0A3 /* kk-event.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580C21196FA90055256A /* kk-event.cc */; };
@@ -68,7 +69,6 @@
 		1A91582221196FA90055256A /* kk-config.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580521196FA90055256A /* kk-config.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A91582321196FA90055256A /* kk-wk.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580621196FA90055256A /* kk-wk.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1A91582421196FA90055256A /* kk-ws.h in Headers */ = {isa = PBXBuildFile; fileRef = 1A91580721196FA90055256A /* kk-ws.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1A91582521196FA90055256A /* kk-atomic-pthread.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580921196FA90055256A /* kk-atomic-pthread.cc */; };
 		1A91582621196FA90055256A /* kk-crypto.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580A21196FA90055256A /* kk-crypto.cc */; };
 		1A91582721196FA90055256A /* kk-chan.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580B21196FA90055256A /* kk-chan.cc */; };
 		1A91582821196FA90055256A /* kk-event.cc in Sources */ = {isa = PBXBuildFile; fileRef = 1A91580C21196FA90055256A /* kk-event.cc */; };
@@ -134,6 +134,8 @@
 
 /* Begin PBXFileReference section */
 		1A0111C0216090C4002E4182 /* kk-script-debugger.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-script-debugger.cc"; sourceTree = "<group>"; };
+		1A6C907E216F007A00FDB4D1 /* kk-lock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "kk-lock.h"; sourceTree = "<group>"; };
+		1A6C9082216F00F100FDB4D1 /* kk-lock-pthread.cc */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-lock-pthread.cc"; sourceTree = "<group>"; };
 		1A7CBC4D211ADC8D006DC0A3 /* libKKObject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libKKObject.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157EE21196F7B0055256A /* KKObject.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KKObject.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A9157F121196F7B0055256A /* KKObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KKObject.h; sourceTree = "<group>"; };
@@ -152,7 +154,6 @@
 		1A91580521196FA90055256A /* kk-config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-config.h"; sourceTree = "<group>"; };
 		1A91580621196FA90055256A /* kk-wk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-wk.h"; sourceTree = "<group>"; };
 		1A91580721196FA90055256A /* kk-ws.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "kk-ws.h"; sourceTree = "<group>"; };
-		1A91580921196FA90055256A /* kk-atomic-pthread.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-atomic-pthread.cc"; sourceTree = "<group>"; };
 		1A91580A21196FA90055256A /* kk-crypto.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-crypto.cc"; sourceTree = "<group>"; };
 		1A91580B21196FA90055256A /* kk-chan.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-chan.cc"; sourceTree = "<group>"; };
 		1A91580C21196FA90055256A /* kk-event.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "kk-event.cc"; sourceTree = "<group>"; };
@@ -240,6 +241,7 @@
 				1A91580621196FA90055256A /* kk-wk.h */,
 				1A91580721196FA90055256A /* kk-ws.h */,
 				1A91587B21198C270055256A /* kk-bio.h */,
+				1A6C907E216F007A00FDB4D1 /* kk-lock.h */,
 			);
 			name = include;
 			path = ../include;
@@ -248,7 +250,6 @@
 		1A91580821196FA90055256A /* src */ = {
 			isa = PBXGroup;
 			children = (
-				1A91580921196FA90055256A /* kk-atomic-pthread.cc */,
 				1A91580A21196FA90055256A /* kk-crypto.cc */,
 				1A91580B21196FA90055256A /* kk-chan.cc */,
 				1A91580C21196FA90055256A /* kk-event.cc */,
@@ -264,6 +265,7 @@
 				1A91581521196FA90055256A /* kk-dispatch.cc */,
 				1A91581621196FA90055256A /* kk-block.cc */,
 				1A91587F21198D4B0055256A /* kk-bio.cc */,
+				1A6C9082216F00F100FDB4D1 /* kk-lock-pthread.cc */,
 			);
 			name = src;
 			path = ../src;
@@ -331,6 +333,7 @@
 				1A91581D21196FA90055256A /* kk-event.h in Headers */,
 				1A91581A21196FA90055256A /* kk-object.h in Headers */,
 				1A91581921196FA90055256A /* kk-string.h in Headers */,
+				1A6C9084216F03C900FDB4D1 /* kk-lock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +493,6 @@
 				1A7CBC5E211ADCD2006DC0A3 /* kk-string.cc in Sources */,
 				1A7CBC68211ADCD2006DC0A3 /* kk-bio.cc in Sources */,
 				1A7CBC65211ADCD2006DC0A3 /* kk-http.cc in Sources */,
-				1A7CBC5A211ADCD2006DC0A3 /* kk-atomic-pthread.cc in Sources */,
 				1A7CBC5C211ADCD2006DC0A3 /* kk-chan.cc in Sources */,
 				1A7CBC67211ADCD2006DC0A3 /* kk-block.cc in Sources */,
 			);
@@ -509,12 +511,12 @@
 				1A91582621196FA90055256A /* kk-crypto.cc in Sources */,
 				1A91582F21196FA90055256A /* kk-object.cc in Sources */,
 				1A91582A21196FA90055256A /* kk-script.cc in Sources */,
+				1A6C9083216F00F100FDB4D1 /* kk-lock-pthread.cc in Sources */,
 				1A91588021198D4B0055256A /* kk-bio.cc in Sources */,
 				1A91582D21196FA90055256A /* kk-ws.cc in Sources */,
 				1A91582B21196FA90055256A /* kk-ev.cc in Sources */,
 				1A91582921196FA90055256A /* kk-string.cc in Sources */,
 				1A91583021196FA90055256A /* kk-http.cc in Sources */,
-				1A91582521196FA90055256A /* kk-atomic-pthread.cc in Sources */,
 				1A91582721196FA90055256A /* kk-chan.cc in Sources */,
 				1A91583221196FA90055256A /* kk-block.cc in Sources */,
 			);

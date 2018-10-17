@@ -12,12 +12,14 @@
 
 #include <KKObject/kk-object.h>
 #include <KKObject/kk-script.h>
+#include <KKObject/kk-block.h>
 #include <list>
 
 #else
 
 #include "kk-object.h"
 #include "kk-script.h"
+#include "kk-block.h"
 #include <list>
 
 #endif
@@ -27,37 +29,18 @@ namespace kk {
     
     class EventEmitter;
     
-    class Event : public Object ,public kk::script::IObject {
+    class Event : public kk::script::HeapObject ,public kk::script::IObject {
     DEF_SCRIPT_CLASS
         
     };
     
-    typedef void (*EventCFunction) (EventEmitter * emitter,CString name,Event * event,void * context);
-    
-    class EventFunction : public Object {
-    public:
-        virtual void call(EventEmitter * emitter,String & name,Event * event,void * context) = 0;
-    };
-    
-    class EventCallback : public Object {
-    public:
-        EventCallback(String &name,EventFunction * func,EventCFunction cfunc,kk::script::Object * jsfunc,void * context) :func(func),name(name),context(context),cfunc(cfunc),jsfunc(jsfunc) {}
-        EventCallback(EventCallback & cb):func(cb.func),name(cb.name),context(cb.context),cfunc(cb.cfunc),jsfunc(cb.jsfunc) {}
-        virtual ~EventCallback() {}
-        Strong func;
-        Strong jsfunc;
-        EventCFunction cfunc;
-        String name;
-        void * context;
-    };
-    
-    class EventEmitter : public Object ,public kk::script::IObject {
+    typedef void (*EventFunction) (EventEmitter * emitter,CString name,Event * event,BK_DEF_ARG);
+
+    class EventEmitter : public kk::script::ReflectObject ,public kk::script::IObject {
     public:
         virtual ~EventEmitter();
-        virtual void on(String name,EventFunction * func,void * context);
-        virtual void off(String name,EventFunction * func,void * context);
-        virtual void on(String name,EventCFunction func,void * context);
-        virtual void off(String name,EventCFunction func,void * context);
+        virtual void on(String name,EventFunction func,BK_DEF_ARG);
+        virtual void off(String name,EventFunction func);
         virtual void emit(String name,Event * event);
         virtual kk::Boolean has(String name);
         
@@ -67,12 +50,16 @@ namespace kk {
         duk_ret_t duk_has(duk_context * ctx);
         
         DEF_SCRIPT_CLASS
-        
-    protected:
-        virtual void on(String name,EventFunction * func,EventCFunction cfunc,kk::script::Object * jsfunc,void * context);
-        virtual void off(String name,EventFunction * func,EventCFunction cfunc,kk::script::Object * jsfunc,void * context);
+
     protected:
         std::list<Strong> _callbacks;
+        std::map<kk::String,kk::Int> _keyCounts;
+        std::set<kk::String> _keys;
+        std::set<kk::String> _prefixs;
+        
+        virtual void add(String & name);
+        virtual void remove(String & name);
+        
     };
     
     

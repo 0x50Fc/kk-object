@@ -1,9 +1,10 @@
 
 #include "kk-config.h"
 #include "kk-object.h"
-#include <list>
 #include <strstream>
 #include <typeinfo>
+#include <pthread.h>
+#include <queue>
 
 #ifdef __ANDROID_API__
 
@@ -139,7 +140,7 @@ namespace kk {
     }
     
     std::string Object::toString() {
-        return std::string(typeid(Object).name());
+        return std::string(typeid(this).name());
     }
     
     void Object::release() {
@@ -198,6 +199,116 @@ namespace kk {
         if(a != nullptr) {
             a->unlock();
         }
+    }
+    
+    static pthread_key_t kScopeCurrent = 0;
+    
+    Scope::Scope():_parent(Scope::current()) {
+        pthread_setspecific(kScopeCurrent, this);
+    }
+    
+    Scope::~Scope() {
+        
+        Object * v = nullptr;
+        
+        do {
+            
+            if(_objects.empty()) {
+                break;
+            }
+            
+            v = _objects.front();
+            
+            _objects.pop();
+            
+            v->release();
+            
+        } while(v != nullptr);
+        
+        pthread_setspecific(kScopeCurrent, _parent);
+        
+    }
+    
+    void Scope::addObject(Object * object) {
+        _objects.push(object);
+        object->retain();
+    }
+    
+    Scope * Scope::parent() {
+        return _parent;
+    }
+    
+    Scope * Scope::current() {
+        if(kScopeCurrent == 0) {
+            pthread_key_create(&kScopeCurrent,nullptr);
+        }
+        return (Scope *) pthread_getspecific(kScopeCurrent);
+    }
+    
+    class MutexAtomic : public Atomic {
+    public:
+        
+        MutexAtomic() {
+            pthread_mutex_init(&_lock, nullptr);
+            pthread_mutex_init(&_objectLock, nullptr);
+        }
+        
+        virtual ~MutexAtomic() {
+            pthread_mutex_destroy(&_lock);
+            pthread_mutex_destroy(&_objectLock);
+        }
+        
+        virtual void lock() {
+            pthread_mutex_lock(&_lock);
+        }
+        
+        virtual void unlock() {
+            pthread_mutex_unlock(&_lock);
+            
+            Object * v = nullptr;
+            
+            do {
+                
+                pthread_mutex_lock(&_objectLock);
+                
+                if(_objects.empty()) {
+                    v = nullptr;
+                } else {
+                    v = _objects.front();
+                    _objects.pop();
+                }
+                
+                pthread_mutex_unlock(&_objectLock);
+                
+                if(v != nullptr && v->retainCount() == 0) {
+                    delete v;
+                }
+                
+            } while (v);
+        }
+        
+        virtual void addObject(Object * object) {
+            pthread_mutex_lock(&_objectLock);
+            _objects.push(object);
+            pthread_mutex_unlock(&_objectLock);
+        }
+        
+    private:
+        pthread_mutex_t _lock;
+        pthread_mutex_t _objectLock;
+        std::queue<Object *> _objects;
+    };
+    
+    Atomic * atomic() {
+        
+        static Atomic * a = nullptr;
+        
+        if(a == nullptr) {
+            a = new MutexAtomic();
+        }
+        
+        return a;
+        
     }
     
 #ifdef __ANDROID_API__

@@ -171,6 +171,8 @@ namespace kk {
             
             if(fn && fn->jsContext()) {
                 
+                Scope scope;
+                
                 duk_context * ctx = fn->jsContext();
                 
                 duk_push_heapptr(ctx, fn->heapptr());
@@ -207,6 +209,8 @@ namespace kk {
                 kk::script::Object * fn = onload.as<kk::script::Object>();
                 
                 if(fn && fn->jsContext()) {
+                    
+                    Scope scope;
                     
                     duk_context * ctx = fn->jsContext();
 

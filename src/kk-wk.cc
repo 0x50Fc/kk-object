@@ -123,6 +123,8 @@ namespace kk {
         
         if(_ctx != nullptr) {
             
+            Scope scope;
+            
             kk::Binary * p = binary;
             
             duk_push_heapptr(_ctx, _heapptr);
@@ -273,6 +275,8 @@ namespace kk {
         
         if(v != nullptr) {
             
+            Scope scope;
+            
             duk_context * ctx = v->dukContext();
             
             duk_push_global_object(ctx);
@@ -315,6 +319,8 @@ namespace kk {
         kk::Binary * p = binary;
         
         if(v != nullptr) {
+            
+            Scope scope;
             
             duk_context * ctx = v->dukContext();
             

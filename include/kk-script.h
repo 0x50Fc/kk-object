@@ -77,6 +77,12 @@ namespace kk {
             std::map<duk_context *,void *> _heapptrs;
         };
         
+        class IReflectObject {
+        public:
+            virtual void addReflect(duk_context * ctx,void * heapptr) = 0;
+            virtual void * reflect(duk_context * ctx) = 0;
+        };
+        
         class Object : public kk::Object {
         public:
             Object(Context * context,duk_idx_t idx);
@@ -179,6 +185,24 @@ namespace kk {
         void duk_unweakObject(duk_context * ctx, duk_idx_t idx,IWeakObject * object);
         
         void OpenlibMap(duk_context * ctx);
+        
+        
+        class ReflectObject: public kk::Object, public IReflectObject, public IWeakObject {
+        public:
+            ReflectObject();
+            virtual ~ReflectObject();
+            virtual void recycle(duk_context * ctx, void * heapptr);
+            virtual void addReflect(duk_context * ctx,void * heapptr);
+            virtual void * reflect(duk_context * ctx);
+        protected:
+            std::map<duk_context *,void *> _heapptrs;
+        };
+        
+        typedef void (*OpenlibFunc)(duk_context * ctx);
+        
+        void addOpenlib(OpenlibFunc func, kk::CString target);
+        
+        void Openlib(duk_context * ctx,kk::CString target);
         
 #define DEF_SCRIPT_CLASS \
     public: \

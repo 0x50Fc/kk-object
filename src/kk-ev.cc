@@ -100,6 +100,8 @@ namespace kk {
                 return;
             }
             
+            Scope scope;
+            
             duk_context * ctx = _ctx;
             
             _isCalling = true;

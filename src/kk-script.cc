@@ -24,7 +24,9 @@ namespace kk {
             
             for(int i=0;i<top;i++) {
                 
-                if(duk_is_string(ctx, - top + i)) {
+                if(duk_is_error(ctx,- top + i)) {
+                    Error(ctx,-top + i);
+                } else if(duk_is_string(ctx, - top + i)) {
                     kk::Log("%s",duk_to_string(ctx, - top + i));
                 } else if(duk_is_number(ctx, - top + i)) {
                     kk::Log("%g",duk_to_number(ctx, - top + i));
@@ -279,6 +281,22 @@ namespace kk {
                 }
             }
             
+            {
+                IReflectObject * v = dynamic_cast<IReflectObject *>(object);
+                if(v) {
+                    void * heapptr = v->reflect(ctx);
+                    if(heapptr == nullptr) {
+                        duk_push_object(ctx);
+                        heapptr = duk_get_heapptr(ctx, -1);
+                        InitObject(ctx, -1, object);
+                        v->addReflect(ctx, heapptr);
+                    } else {
+                        duk_push_heapptr(ctx, heapptr);
+                    }
+                    return;
+                }
+            }
+            
             duk_push_object(ctx);
             InitObject(ctx, -1, object);
         }
@@ -289,12 +307,19 @@ namespace kk {
             duk_push_pointer(ctx, object);
             duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE | DUK_DEFPROP_CLEAR_ENUMERABLE);
             
-            object->retain();
-            
             if(GetPrototype(ctx, object)) {
                 duk_set_prototype(ctx, idx - 1);
             }
             
+            {
+                IReflectObject * v = dynamic_cast<IReflectObject *>(object);
+                if(v != nullptr) {
+                    Scope::current()->addObject(object);
+                    return;
+                }
+            }
+            
+            object->retain();
             duk_push_c_function(ctx, ScriptObjectDeallocFunc, 1);
             duk_set_finalizer(ctx, idx - 1);
             
@@ -1387,9 +1412,6 @@ namespace kk {
                 
                 if(duk_is_function(ctx, -1)) {
                     
-                    
-                    
-                    
                     duk_get_prop_string(ctx, -2, "value");
                     duk_get_prop_string(ctx, -3, "key");
                     
@@ -1436,6 +1458,93 @@ namespace kk {
             
             duk_put_global_string(ctx, "Map");
             
+        }
+        
+        ReflectObject::ReflectObject() {
+            
+        }
+        
+        ReflectObject::~ReflectObject() {
+            
+            std::map<duk_context *,void *>::iterator i = _heapptrs.begin();
+            
+            while(i != _heapptrs.end()) {
+                
+                duk_context * ctx = i->first;
+                void * heapptr = i->second;
+                
+                i = _heapptrs.erase(i);
+                
+                duk_push_global_object(ctx);
+                duk_push_sprintf(ctx, "0x%x",(long) heapptr);
+                duk_del_prop(ctx, -2);
+                duk_pop(ctx);
+                
+            }
+            
+        }
+        
+        void ReflectObject::recycle(duk_context * ctx, void * heapptr) {
+            std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
+            if(i != _heapptrs.end()) {
+                _heapptrs.erase(i);
+            }
+        }
+        
+        void ReflectObject::addReflect(duk_context * ctx,void * heapptr) {
+            
+            std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
+            
+            if(i == _heapptrs.end()) {
+                
+                _heapptrs[ctx] = heapptr;
+                
+                duk_push_global_object(ctx);
+                
+                duk_push_sprintf(ctx, "0x%x",(long) heapptr);
+                duk_push_heapptr(ctx, heapptr);
+                
+                duk_weakObject(ctx, -1, this);
+                
+                duk_def_prop(ctx, -3, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_ENUMERABLE | DUK_DEFPROP_SET_CONFIGURABLE);
+                
+                duk_pop(ctx);
+                
+            }
+            
+            
+        }
+        
+        void * ReflectObject::reflect(duk_context * ctx) {
+            std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
+            if(i != _heapptrs.end()) {
+                return i->second;
+            }
+            return nullptr;
+        }
+        
+        static std::map<kk::String,std::vector<OpenlibFunc>> _openlibs;
+        
+        void addOpenlib(OpenlibFunc func, kk::CString target) {
+            std::map<kk::String,std::vector<OpenlibFunc>>::iterator i = _openlibs.find(target);
+            if(i == _openlibs.end()) {
+                _openlibs[target] = std::vector<OpenlibFunc>();
+            }
+            std::vector<OpenlibFunc> & fns = _openlibs[target];
+            fns.push_back(func);
+        }
+        
+        void Openlib(duk_context * ctx,kk::CString target) {
+            std::map<kk::String,std::vector<OpenlibFunc>>::iterator i = _openlibs.find(target);
+            if(i != _openlibs.end()) {
+                std::vector<OpenlibFunc> & fns = i->second;
+                std::vector<OpenlibFunc>::iterator n = fns.begin();
+                while(n != fns.end()) {
+                    OpenlibFunc fn = * n;
+                    (*fn)(ctx);
+                    n ++;
+                }
+            }
         }
         
     }

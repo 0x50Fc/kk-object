@@ -25,9 +25,11 @@ namespace kk {
         }
     }
     
-    Block::Block(void * data,size_t size):_type(BlockTypeCopy),_object(nullptr),_size(0),_dealloc(nullptr) {
-        _data = malloc(size);
-        memcpy(_data, data, size);
+    Block::Block(void * data,size_t size):_type(BlockTypeCopy),_object(nullptr),_data(nullptr),_size(size),_dealloc(nullptr) {
+        if(data && size) {
+            _data = malloc(size);
+            memcpy(_data, data, size);
+        }
     }
     
     Block::Block(void * ptr,BlockPtrDeallocFunc dealloc):_type(BlockTypePtr),_object(nullptr),_size(0),_data(ptr),_dealloc(dealloc) {

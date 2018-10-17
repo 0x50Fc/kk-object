@@ -21,3 +21,5 @@
 #include <KKObject/kk-wk.h>
 #include <KKObject/kk-ws.h>
 #include <KKObject/kk-bio.h>
+#include <KKObject/kk-lock.h>
+
