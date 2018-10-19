@@ -18,7 +18,7 @@ add_library(kk-object
             src/kk-http.cc
             src/kk-wk.cc
             src/kk-ws.cc
-            src/kk-atomic-pthread.cc
+            src/kk-lock.cc
             lib/md5/md5.c)
 
 include_directories(

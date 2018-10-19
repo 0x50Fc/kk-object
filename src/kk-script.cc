@@ -1460,11 +1460,13 @@ namespace kk {
             
         }
         
-        ReflectObject::ReflectObject() {
+        ReflectObject::ReflectObject():_recycling(false) {
             
         }
         
         ReflectObject::~ReflectObject() {
+            
+            _recycling = true;
             
             std::map<duk_context *,void *>::iterator i = _heapptrs.begin();
             
@@ -1474,6 +1476,10 @@ namespace kk {
                 void * heapptr = i->second;
                 
                 i = _heapptrs.erase(i);
+                
+                duk_push_heapptr(ctx, heapptr);
+                duk_unweakObject(ctx, -1, this);
+                duk_pop(ctx);
                 
                 duk_push_global_object(ctx);
                 duk_push_sprintf(ctx, "0x%x",(long) heapptr);
@@ -1485,6 +1491,11 @@ namespace kk {
         }
         
         void ReflectObject::recycle(duk_context * ctx, void * heapptr) {
+            
+            if(_recycling) {
+                return ;
+            }
+            
             std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
             if(i != _heapptrs.end()) {
                 _heapptrs.erase(i);
@@ -1492,6 +1503,10 @@ namespace kk {
         }
         
         void ReflectObject::addReflect(duk_context * ctx,void * heapptr) {
+            
+            if(_recycling) {
+                return ;
+            }
             
             std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
             
@@ -1516,6 +1531,9 @@ namespace kk {
         }
         
         void * ReflectObject::reflect(duk_context * ctx) {
+            if(_recycling) {
+                return nullptr;
+            }
             std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
             if(i != _heapptrs.end()) {
                 return i->second;
