@@ -196,6 +196,7 @@ namespace kk {
             virtual void * reflect(duk_context * ctx);
         protected:
             std::map<duk_context *,void *> _heapptrs;
+            kk::Boolean _recycling;
         };
         
         typedef void (*OpenlibFunc)(duk_context * ctx);

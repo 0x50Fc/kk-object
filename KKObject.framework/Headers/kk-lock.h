@@ -10,16 +10,6 @@
 #define kk_lock_h
 
 
-#if defined(KK_PLATFORM_IOS)
-
-#include <KKObject/kk-object.h>
-
-#else
-
-#include "kk-object.h"
-
-#endif
-
 namespace kk {
     
     class Lock {

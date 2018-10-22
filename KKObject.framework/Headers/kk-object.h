@@ -12,6 +12,7 @@
 #include <vector>
 #include <set>
 #include <map>
+#include <queue>
 
 namespace kk {
     
@@ -99,6 +100,18 @@ namespace kk {
         Weak& operator=(Object * object);
         Weak& operator=(Ref& ref);
         Weak& operator=(Weak& ref);
+    };
+    
+    class Scope {
+    public:
+        Scope();
+        virtual ~Scope();
+        virtual void addObject(Object * object);
+        virtual Scope * parent();
+        static Scope * current();
+    protected:
+        std::queue<Object *> _objects;
+        Scope * _parent;
     };
     
     void LogV(const char * format, va_list va);
