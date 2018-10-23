@@ -267,6 +267,15 @@ namespace kk {
             
             duk_push_this(ctx);
             
+            if(!duk_is_object(ctx, -1)) {
+                duk_pop(ctx);
+                std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
+                if(i == _heapptrs.end()) {
+                    return 0;
+                }
+                duk_push_heapptr(ctx, i->second);
+            }
+            
             duk_get_prop_string(ctx, -1, "__events");
             
             if(!duk_is_array(ctx, -1)) {
@@ -313,6 +322,15 @@ namespace kk {
         }
         
         duk_push_this(ctx);
+        
+        if(!duk_is_object(ctx, -1)) {
+            duk_pop(ctx);
+            std::map<duk_context *,void *>::iterator i = _heapptrs.find(ctx);
+            if(i == _heapptrs.end()) {
+                return 0;
+            }
+            duk_push_heapptr(ctx, i->second);
+        }
         
         duk_get_prop_string(ctx, -1, "__events");
         
