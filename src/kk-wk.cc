@@ -312,17 +312,18 @@ namespace kk {
     
     static void WebWorkerPostMessageFunc(DispatchQueue * queue,BK_DEF_ARG) {
         
-        BK_GET(v, WebWorker)
+        BK_GET_STRONG(v)
         BK_GET(binary, kk::Binary)
         BK_GET(top,int)
         
         kk::Binary * p = binary;
+        WebWorker * w = v.as<WebWorker>();
         
-        if(v != nullptr) {
+        if(w != nullptr) {
             
             Scope scope;
             
-            duk_context * ctx = v->dukContext();
+            duk_context * ctx = w->dukContext();
             
             duk_push_global_object(ctx);
             
