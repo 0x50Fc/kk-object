@@ -305,7 +305,7 @@ namespace kk {
             
             duk_push_string(ctx, "__object");
             duk_push_pointer(ctx, object);
-            duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_CLEAR_CONFIGURABLE | DUK_DEFPROP_CLEAR_ENUMERABLE);
+            duk_def_prop(ctx, idx - 2, DUK_DEFPROP_HAVE_VALUE | DUK_DEFPROP_CLEAR_WRITABLE | DUK_DEFPROP_SET_CONFIGURABLE | DUK_DEFPROP_CLEAR_ENUMERABLE);
             
             if(GetPrototype(ctx, object)) {
                 duk_set_prototype(ctx, idx - 1);
@@ -1479,6 +1479,7 @@ namespace kk {
                 
                 duk_push_heapptr(ctx, heapptr);
                 duk_unweakObject(ctx, -1, this);
+                duk_del_prop_string(ctx, -1, "__object");
                 duk_pop(ctx);
                 
                 duk_push_global_object(ctx);
