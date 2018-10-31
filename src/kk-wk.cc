@@ -26,7 +26,7 @@ namespace kk {
         virtual kk::script::Context * jsContext();
         virtual duk_context * dukContext();
         
-        void open(duk_context * ctx, void * _heapptr, DispatchQueue * main);
+        void open(DispatchQueue * main);
         
         virtual duk_ret_t duk_postMessage(duk_context * ctx);
         virtual duk_ret_t duk_terminate(duk_context * ctx);
@@ -38,8 +38,6 @@ namespace kk {
         virtual void postMessage(kk::Binary * binary,int top);
         
     protected:
-        duk_context * _ctx;
-        void * _heapptr;
         kk::Weak _main;
         DispatchQueue * _queue;
         evdns_base * _dns;
@@ -99,7 +97,7 @@ namespace kk {
                 
                 kk::script::PushObject(ctx, v);
                 
-                v->open(ctx,duk_get_heapptr(ctx, -1), queue);
+                v->open(queue);
                 
                 return 1;
             }
@@ -121,38 +119,47 @@ namespace kk {
     
     void WebWorker::postMessage(kk::Binary * binary,int top) {
         
-        if(_ctx != nullptr) {
+        std::map<duk_context * ,void *> m = _heapptrs;
+        
+        std::map<duk_context * ,void *>::iterator i = m.begin();
+        
+        while(i != m.end()) {
             
+            duk_context * ctx = i->first;
+            void * heapptr = i->second;
+    
             Scope scope;
             
             kk::Binary * p = binary;
             
-            duk_push_heapptr(_ctx, _heapptr);
+            duk_push_heapptr(ctx, heapptr);
             
-            if(duk_is_object(_ctx, -1)) {
+            if(duk_is_object(ctx, -1)) {
                 
-                duk_push_string(_ctx, "onmessage");
-                duk_get_prop(_ctx, -2);
+                duk_push_string(ctx, "onmessage");
+                duk_get_prop(ctx, -2);
                 
-                if(duk_is_function(_ctx, -1)) {
+                if(duk_is_function(ctx, -1)) {
                     
-                    duk_dup(_ctx, -2);
+                    duk_dup(ctx, -2);
                     
                     while(p) {
-                        p = kk::BinaryPushContext(_ctx, p);
+                        p = kk::BinaryPushContext(ctx, p);
                     }
                     
-                    if(duk_pcall_method(_ctx, top) != DUK_EXEC_SUCCESS) {
-                        kk::script::Error(_ctx, -1);
+                    if(duk_pcall_method(ctx, top) != DUK_EXEC_SUCCESS) {
+                        kk::script::Error(ctx, -1);
                     }
                     
                 }
                 
-                duk_pop(_ctx);
+                duk_pop(ctx);
                 
             }
             
-            duk_pop(_ctx);
+            duk_pop(ctx);
+            
+            i ++;
             
         }
         
@@ -225,7 +232,7 @@ namespace kk {
     IMP_SCRIPT_CLASS_END
     
     
-    WebWorker::WebWorker():_jsContext(nullptr),_dns(nullptr),_ctx(nullptr),_heapptr(nullptr),_main(nullptr){
+    WebWorker::WebWorker():_jsContext(nullptr),_dns(nullptr),_main(nullptr){
         _queue = new DispatchQueue("kk::WebWorker");
         _queue->retain();
         _dns = evdns_base_new(_queue->base(), EVDNS_BASE_INITIALIZE_NAMESERVERS);
@@ -301,9 +308,7 @@ namespace kk {
         
     }
     
-    void WebWorker::open(duk_context * ctx, void * heapptr, DispatchQueue * main) {
-        _ctx = ctx;
-        _heapptr = heapptr;
+    void WebWorker::open(DispatchQueue * main) {
         _main = main;
         BK_CTX
         BK_WEAK(v,this)
